@@ -18,7 +18,7 @@ class Item
   end
 
   def unit_price_to_dollars
-    (unit_price.to_f).round(2)
+    unit_price.to_f.round(2)
   end
 
   def update(attributes)
@@ -28,5 +28,4 @@ class Item
     @unit_price  = attributes[:unit_price]  || @unit_price
     @updated_at  = attributes[:updated_at]
   end
-
 end
