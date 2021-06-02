@@ -44,7 +44,9 @@ class ItemRepository
   end
 
   def update(id, attributes)
-    find_by_id(id).update(attributes)
+    unless find_by_id(id) == nil
+      find_by_id(id).update(attributes)
+    end
   end
 
   def delete(id)
@@ -55,12 +57,12 @@ class ItemRepository
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {
-        id: row[:id].to_i,
-        name: row[:name],
+        id:          row[:id].to_i,
+        name:        row[:name],
         description: row[:description],
-        unit_price: BigDecimal(row[:unit_price]),
-        created_at: Time.parse(row[:created_at]),
-        updated_at: Time.parse(row[:updated_at]),
+        unit_price:  BigDecimal(row[:unit_price]) / 100,
+        created_at:  Time.parse(row[:created_at]),
+        updated_at:  Time.parse(row[:updated_at]),
         merchant_id: row[:merchant_id].to_i
       }
       @all << Item.new(data_hash)
@@ -70,4 +72,5 @@ class ItemRepository
   def inspect
    "#<#{self.class} #{@items.size} rows>"
   end
+
 end

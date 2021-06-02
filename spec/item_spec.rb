@@ -40,15 +40,15 @@ RSpec.describe Item do
   describe 'Object Methods' do
 
     it 'returns the unit price to dollars' do
-      expect(@i.unit_price_to_dollars).to eq(0.11)
+      expect(@i.unit_price_to_dollars).to eq(10.99)
       expect(@i.unit_price_to_dollars).to be_a(Float)
     end
 
     it 'can update the Item with provided attributes' do
       attributes = {
-        name: "Mechanical Pencil",
+        name:        "Mechanical Pencil",
         description: "You can use it to write things and refill it with lead",
-        unit_price: BigDecimal(1.99,3)
+        unit_price:  BigDecimal(1.99,3)
       }
 
       intitial_update_time = @i.updated_at

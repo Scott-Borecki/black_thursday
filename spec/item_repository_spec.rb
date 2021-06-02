@@ -11,15 +11,6 @@ RSpec.describe ItemRepository do
 
   before :each do
     @ir = ItemRepository.new("./spec/fixtures/items.csv")
-    # @i = Item.new({
-    #   :id          => 1,
-    #   :name        => "Pencil",
-    #   :description => "You can use it to write things",
-    #   :unit_price  => BigDecimal(10.99,4),
-    #   :created_at  => Time.now,
-    #   :updated_at  => Time.now,
-    #   :merchant_id => 2
-    # })
   end
 
   describe 'Object Creation' do
@@ -35,10 +26,6 @@ RSpec.describe ItemRepository do
   end
 
   describe 'Object Methods' do
-
-    # before :each do
-    #   @ir.all << @i
-    # end
 
     it 'can return Item by object ID' do
       expect(@ir.find_by_id(263395237).name).to eq("RealPush Icon Set")
@@ -57,15 +44,15 @@ RSpec.describe ItemRepository do
     end
 
     it 'can return all Items by price' do
-      item = @ir.find_all_by_price(1200)
+      item = @ir.find_all_by_price(12)
       expect(item[0].id).to eq(263395237)
       expect(@ir.find_all_by_price(9.99)).to eq([])
     end
 
     it 'can return all Items by price range' do
-      item = @ir.find_all_by_price_in_range(1150..1250)
+      item = @ir.find_all_by_price_in_range(11.50..12.50)
       expect(item[0].id).to eq(263395237)
-      expect(@ir.find_all_by_price_in_range(1..10)).to eq([])
+      expect(@ir.find_all_by_price_in_range(0.1..1.0)).to eq([])
     end
 
     it 'can return all Items by merchant id' do
@@ -114,6 +101,10 @@ RSpec.describe ItemRepository do
       expect(item.unit_price).to eq(1.99)
     end
 
+    it 'can do nothing when item does not exist' do
+      @ir.update(5, {})
+    end
+
     it 'can delete Item instance by id' do
       expect(@ir.all.count).to eq(6)
       @ir.delete(263395237)
@@ -127,5 +118,7 @@ RSpec.describe ItemRepository do
 
       expect(@ir.all.count).to eq(12)
     end
+
   end
+
 end
