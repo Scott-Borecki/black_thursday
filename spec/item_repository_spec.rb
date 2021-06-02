@@ -63,12 +63,12 @@ RSpec.describe ItemRepository do
 
     it 'can create a new Item instance' do
       attributes = {
-        :name        => 'Pen',
-        :description => 'You can use it to write things',
-        :unit_price  => BigDecimal(0.99, 3),
-        :created_at  => Time.now,
-        :updated_at  => Time.now,
-        :merchant_id => 3
+        name:        'Pen',
+        description: 'You can use it to write things',
+        unit_price:  BigDecimal(0.99, 3),
+        created_at:  Time.now,
+        updated_at:  Time.now,
+        merchant_id: 3
       }
 
       @ir.create(attributes)
@@ -87,9 +87,9 @@ RSpec.describe ItemRepository do
 
     it 'can update Item instance with provided attributes' do
       attributes = {
-        name: 'Mechanical Pencil',
+        name:        'Mechanical Pencil',
         description: 'You can use it to write things and refill it with lead',
-        unit_price: BigDecimal(1.99,3)
+        unit_price:  BigDecimal(1.99,3)
       }
 
       @ir.update(263396013, attributes)
@@ -97,7 +97,8 @@ RSpec.describe ItemRepository do
       expect(item.id).to eq(263396013)
       expect(item.merchant_id).to eq(12334185)
       expect(item.name).to eq('Mechanical Pencil')
-      expect(item.description).to eq('You can use it to write things and refill it with lead')
+      expect(item.description).
+        to eq('You can use it to write things and refill it with lead')
       expect(item.unit_price).to eq(1.99)
     end
 
