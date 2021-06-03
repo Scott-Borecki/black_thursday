@@ -26,6 +26,11 @@ class InvoiceRepository
     all.find_all { |invoice| merchant_id == invoice.merchant_id }
   end 
 
+  def find_all_by_status(status)
+    all.find_all { |invoice| status == invoice.status }
+  end 
+
+
 
 
 
