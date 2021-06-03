@@ -15,6 +15,11 @@ class TransactionRepository
     all.find { |transaction| id == transaction.id }
   end
 
+  def find_all_by_invoice_id(invoice_id)
+    all.find_all { |transaction| invoice_id == transaction.invoice_id }
+  end
+
+
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {
