@@ -7,8 +7,8 @@ RSpec.describe MerchantRepository do
 
   before :each do
     @mr = MerchantRepository.new('./spec/fixtures/merchants.csv')
-    @m = Merchant.new({:id => 5, :name => "Turing School"})
-    @m2 = Merchant.new({:id => 4, :name => "Turing Bakery"})
+    @m = Merchant.new(id: 5, name: 'Turing School')
+    @m2 = Merchant.new(id: 4, name: 'Turing Bakery')
   end
 
   describe 'instantiation' do
@@ -40,9 +40,7 @@ RSpec.describe MerchantRepository do
     end
 
     it 'creates new Merchant with attributes' do
-      attributes = {
-        name: "Bob's Burgers"
-      }
+      attributes = {name: "Bob's Burgers"}
       @mr.create(attributes)
 
       expect(@mr.all[7].name).to eq("Bob's Burgers")
@@ -50,27 +48,27 @@ RSpec.describe MerchantRepository do
 
     it 'updates Merchant attributes' do
       @mr.all << @m << @m2
-      @mr.update(5, {:name => 'turingschool.edu'})
+      @mr.update(5, name: 'turingschool.edu')
 
       expect(@m.id).to eq(5)
-      expect(@m.name).to eq("turingschool.edu")
+      expect(@m.name).to eq('turingschool.edu')
     end
 
-    it "#update on unknown merchant does nothing" do
-      @mr.update(13000000, {})
+    it '#update on unknown merchant does nothing' do
+      @mr.update(13_000_000, {})
     end
 
     it 'deletes Merchant by id' do
-      expect(@mr.find_by_id(12334105)).to be_a Merchant
+      expect(@mr.find_by_id(12_334_105)).to be_a Merchant
 
-      @mr.delete(12334105)
+      @mr.delete(12_334_105)
 
       expect(@mr.all.length).to eq(6)
-      expect(@mr.find_by_id(12334105)).to eq(nil)
+      expect(@mr.find_by_id(12_334_105)).to eq(nil)
     end
 
     it 'populates repository' do
-      path = "./spec/fixtures/merchants.csv"
+      path = './spec/fixtures/merchants.csv'
       @mr.populate_repository(path)
 
       expect(@mr.all.count).to eq(14)

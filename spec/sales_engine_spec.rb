@@ -5,8 +5,8 @@ RSpec.describe SalesEngine do
 
     it 'exists' do
       data_hash = {
-        :items     => "./data/items.csv",
-        :merchants => "./data/merchants.csv",
+        :items     => './data/items.csv',
+        :merchants => './data/merchants.csv',
       }
       se = SalesEngine.new(data_hash)
 
@@ -15,8 +15,8 @@ RSpec.describe SalesEngine do
 
     it 'can receive data from a csv' do
       se = SalesEngine.from_csv({
-        :items     => "./data/items.csv",
-        :merchants => "./data/merchants.csv",
+        :items     => './data/items.csv',
+        :merchants => './data/merchants.csv',
       })
 
       expect(se).to be_a(SalesEngine)
