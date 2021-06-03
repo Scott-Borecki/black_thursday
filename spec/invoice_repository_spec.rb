@@ -28,7 +28,10 @@ RSpec.describe InvoiceRepository do
     
     it 'can return Invoice by ID' do 
       expect(@i.find_by_id(1).merchant_id).to eq(12335938)
+      expect(@i.find_by_id(100000000000)).to eq(nil)
     end 
+
+    
   end 
 
 end
