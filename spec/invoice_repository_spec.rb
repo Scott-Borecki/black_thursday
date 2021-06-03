@@ -65,6 +65,21 @@ RSpec.describe InvoiceRepository do
       expect(i1.customer_id).to eq(42000000)
     end
 
+    it 'can update Invoice Id and attributes' do
+      attributes = {
+        status: "shipped"
+      }
+
+      @i.update(1, attributes)
+      invoice = @i.all.find_by_id(1)
+
+      expect(invoice.status).to eq("shipped")
+    end 
+
+    
+
+
+
 
 
 
