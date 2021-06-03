@@ -1,5 +1,7 @@
 class TransactionRepository
 
+  attr_reader :all
+
   def initialize(path)
     @all = []
     # populate_repository(path)
