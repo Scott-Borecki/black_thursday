@@ -76,6 +76,13 @@ RSpec.describe InvoiceRepository do
       expect(invoice.status).to eq("shipped")
     end 
 
+    it 'can delete Invoice by ID' do 
+      expect(@ir.all.count).to eq(19)
+      @i.all.delete(1)
+      expect(@ir.all.count).to eq(18)
+    end
+    
+
     
 
 
