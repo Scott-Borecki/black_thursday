@@ -28,7 +28,7 @@ RSpec.describe ItemRepository do
   describe 'Object Methods' do
 
     it 'can return Item by object ID' do
-      expect(@ir.find_by_id(263395237).name).to eq('RealPush Icon Set')
+      expect(@ir.find_by_id(263_395_237).name).to eq('RealPush Icon Set')
       expect(@ir.find_by_id(2)).to eq(nil)
     end
 
@@ -39,25 +39,25 @@ RSpec.describe ItemRepository do
 
     it 'can return all Items by item description' do
       item = @ir.find_all_with_description('Disney gliTter frames wooden')
-      expect(item[0].id).to eq(263395721)
+      expect(item[0].id).to eq(263_395_721)
       expect(@ir.find_all_with_description('You can eat it')).to eq([])
     end
 
     it 'can return all Items by price' do
       item = @ir.find_all_by_price(12)
-      expect(item[0].id).to eq(263395237)
+      expect(item[0].id).to eq(263_395_237)
       expect(@ir.find_all_by_price(9.99)).to eq([])
     end
 
     it 'can return all Items by price range' do
       item = @ir.find_all_by_price_in_range(11.50..12.50)
-      expect(item[0].id).to eq(263395237)
+      expect(item[0].id).to eq(263_395_237)
       expect(@ir.find_all_by_price_in_range(0.1..1.0)).to eq([])
     end
 
     it 'can return all Items by merchant id' do
-      item = @ir.find_all_by_merchant_id(12334141)
-      expect(item[0].id).to eq(263395237)
+      item = @ir.find_all_by_merchant_id(12_334_141)
+      expect(item[0].id).to eq(263_395_237)
       expect(@ir.find_all_by_merchant_id(1)).to eq([])
     end
 
@@ -75,7 +75,7 @@ RSpec.describe ItemRepository do
       i2 = @ir.all.last
 
       expect(@ir.all.count).to eq(7)
-      expect(i2.id).to eq(263396256)
+      expect(i2.id).to eq(263_396_256)
       expect(i2).to be_a(Item)
       expect(i2.name).to eq('Pen')
       expect(i2.description).to eq('You can use it to write things')
@@ -92,10 +92,10 @@ RSpec.describe ItemRepository do
         unit_price:  BigDecimal(1.99, 3)
       }
 
-      @ir.update(263396013, attributes)
-      item = @ir.find_by_id(263396013)
-      expect(item.id).to eq(263396013)
-      expect(item.merchant_id).to eq(12334185)
+      @ir.update(263_396_013, attributes)
+      item = @ir.find_by_id(263_396_013)
+      expect(item.id).to eq(263_396_013)
+      expect(item.merchant_id).to eq(12_334_185)
       expect(item.name).to eq('Mechanical Pencil')
       expect(item.description)
         .to eq('You can use it to write things and refill it with lead')
@@ -108,7 +108,7 @@ RSpec.describe ItemRepository do
 
     it 'can delete Item instance by id' do
       expect(@ir.all.count).to eq(6)
-      @ir.delete(263395237)
+      @ir.delete(263_395_237)
       expect(@ir.all.count).to eq(5)
     end
 
