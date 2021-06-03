@@ -40,7 +40,7 @@ RSpec.describe MerchantRepository do
     end
 
     it 'creates new Merchant with attributes' do
-      attributes = {name: "Bob's Burgers"}
+      attributes = { name: "Bob's Burgers" }
       @mr.create(attributes)
 
       expect(@mr.all[7].name).to eq("Bob's Burgers")
