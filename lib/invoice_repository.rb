@@ -22,6 +22,10 @@ class InvoiceRepository
     all.find_all { |invoice| customer_id == invoice.customer_id}
   end
 
+  def find_all_by_merchant_id(merchant_id)
+    all.find_all { |invoice| merchant_id == invoice.merchant_id }
+  end 
+
 
 
 
