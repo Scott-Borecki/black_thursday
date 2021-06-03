@@ -33,7 +33,7 @@ RSpec.describe ItemRepository do
     end
 
     it 'can return Item by item name' do
-      expect(@ir.find_by_name('PeNcil').id).to eq(263396013)
+      expect(@ir.find_by_name('PeNcil').id).to eq(263_396_013)
       expect(@ir.find_by_name('Pen')).to eq(nil)
     end
 
