@@ -45,10 +45,12 @@ RSpec.describe InvoiceRepository do
     end
 
     it 'can return all Invoices by status' do 
-      invoices = @i.find_all_by_status("pending")
+      invoices = @i.find_all_by_status("peNding")
       expect(invoices.count).to eq(9)
+      expect(@i.find_all_by_status("squirrels")).to eq ([])
     end
-    
+
+
 
 
 

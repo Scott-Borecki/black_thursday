@@ -27,7 +27,7 @@ class InvoiceRepository
   end 
 
   def find_all_by_status(status)
-    all.find_all { |invoice| status == invoice.status }
+    all.find_all { |invoice| status.downcase == invoice.status.downcase }
   end 
 
 
