@@ -16,13 +16,15 @@ class CustomerRepository
   end
 
   def find_all_by_first_name(sub_string)
-    all.find_all { |customer| customer.first_name.downcase.
-      include? sub_string.downcase }
+    all.find_all do |customer|
+      customer.first_name.downcase.include? sub_string.downcase
+    end
   end
 
   def find_all_by_last_name(sub_string)
-    all.find_all { |customer| customer.last_name.downcase.
-      include? sub_string.downcase }
+    all.find_all do |customer|
+      customer.last_name.downcase.include? sub_string.downcase
+    end
   end
 
   def create(attributes)
