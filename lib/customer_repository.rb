@@ -4,4 +4,8 @@ class CustomerRepository
     @all = []
     # populate_repository(path)
   end
+
+  def inspect
+   "#<#{self.class} #{@customers.size} rows>"
+  end
 end
