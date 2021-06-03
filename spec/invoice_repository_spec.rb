@@ -32,9 +32,9 @@ RSpec.describe InvoiceRepository do
     end 
 
     it 'can return all Invoices by customer ID' do 
-      expect(@i.find_by_customer_id(1).count).to eq(8)
-      expect(@i.find_by_customer_id(100000000000)).to eq(nil)
-    end 
+      invoices = @i.find_by_customer_id(1)
+      expect(invoices[0].merchant_id).to eq(12335938)
+    end
 
 
   end 

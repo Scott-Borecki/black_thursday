@@ -18,6 +18,17 @@ class InvoiceRepository
     all.find { |invoice| id == invoice.id }
   end
 
+  def find_by_customer_id(customer_id)
+    all.find_all { |invoice| customer_id == invoice.customer_id}
+  end
+
+
+
+
+
+
+
+
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {
@@ -30,6 +41,10 @@ class InvoiceRepository
       }
       @all << Invoice.new(data_hash)
     end
+
+    def inspect
+      "#<#{self.class} #{@invoices.size} rows>"
+     end
   end
 
 
