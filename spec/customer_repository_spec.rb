@@ -8,13 +8,11 @@ require 'bigdecimal'
 SimpleCov.start
 
 RSpec.describe CustomerRepository do
-
   before :each do
     @cr = CustomerRepository.new('./spec/fixtures/customers.csv')
   end
 
   describe 'Object Creation' do
-
     it 'exists' do
       expect(@cr).to be_a(CustomerRepository)
     end
@@ -29,7 +27,6 @@ RSpec.describe CustomerRepository do
   end
 
   describe 'Object Methods' do
-
     it 'can return Customer by object ID' do
       expect(@cr.find_by_id(1).first_name).to eq('Joey')
       expect(@cr.find_by_id(999_999_999)).to eq(nil)
@@ -52,7 +49,7 @@ RSpec.describe CustomerRepository do
         first_name:  'Steve',
         last_name:   'Irwin',
         created_at:  Time.now,
-        updated_at:  Time.now,
+        updated_at:  Time.now
       }
 
       @cr.create(attributes)
