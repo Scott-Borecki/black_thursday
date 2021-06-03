@@ -18,15 +18,14 @@ class Item
   end
 
   def unit_price_to_dollars
-    (unit_price.to_f / 100).round(2)
+    unit_price.to_f.round(2)
   end
 
   def update(attributes)
     attributes[:updated_at] = Time.now
-    @name = attributes[:name] || @name
+    @name        = attributes[:name]        || @name
     @description = attributes[:description] || @description
-    @unit_price = attributes[:unit_price] || @unit_price
-    @updated_at = attributes[:updated_at]
+    @unit_price  = attributes[:unit_price]  || @unit_price
+    @updated_at  = attributes[:updated_at]
   end
-
 end
