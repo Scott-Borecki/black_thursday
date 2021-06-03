@@ -16,11 +16,13 @@ class CustomerRepository
   end
 
   def find_all_by_first_name(sub_string)
-    all.find_all { |customer| customer.first_name.downcase.include? sub_string.downcase }
+    all.find_all { |customer| customer.first_name.downcase.
+      include? sub_string.downcase }
   end
 
   def find_all_by_last_name(sub_string)
-    all.find_all { |customer| customer.last_name.downcase.include? sub_string.downcase }
+    all.find_all { |customer| customer.last_name.downcase.
+      include? sub_string.downcase }
   end
 
   def create(attributes)
@@ -45,7 +47,7 @@ class CustomerRepository
         first_name:  row[:first_name],
         last_name:   row[:last_name],
         created_at:  Time.parse(row[:created_at]),
-        updated_at:  Time.parse(row[:updated_at]),
+        updated_at:  Time.parse(row[:updated_at])
       }
       @all << Customer.new(data_hash)
     end

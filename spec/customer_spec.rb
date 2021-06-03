@@ -6,7 +6,6 @@ require_relative '../lib/customer'
 SimpleCov.start
 
 RSpec.describe Customer do
-
   before :each do
     @c = Customer.new(
       id:         6,
@@ -18,7 +17,6 @@ RSpec.describe Customer do
   end
 
   describe 'Object Creation' do
-
     it 'exists' do
       expect(@c).to be_a(Customer)
     end
@@ -30,15 +28,13 @@ RSpec.describe Customer do
       expect(@c.created_at).to be_a(Time)
       expect(@c.updated_at).to be_a(Time)
     end
-
   end
 
   describe 'Object Methods' do
-
     it 'can update the Customer with provided attributes' do
       attributes = {
         first_name: 'Steve',
-        last_name:  'Irwin',
+        last_name:  'Irwin'
       }
 
       intitial_update_time = @c.updated_at
@@ -50,7 +46,7 @@ RSpec.describe Customer do
       expect(@c.updated_at).to be_a(Time)
       expect(@c.updated_at).not_to eq(intitial_update_time)
 
-      attributes = { first_name: 'Paul'}
+      attributes = { first_name: 'Paul' }
 
       intitial_update_time = @c.updated_at
       @c.update(attributes)

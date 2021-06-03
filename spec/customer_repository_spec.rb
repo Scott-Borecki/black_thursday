@@ -67,7 +67,7 @@ RSpec.describe CustomerRepository do
     it 'can update Customer instance with provided attributes' do
       attributes = {
         first_name: 'Steve',
-        last_name:  'Irwin',
+        last_name:  'Irwin'
       }
 
       @cr.update(1, attributes)
