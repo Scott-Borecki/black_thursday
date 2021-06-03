@@ -89,7 +89,7 @@ RSpec.describe ItemRepository do
       attributes = {
         name:        'Mechanical Pencil',
         description: 'You can use it to write things and refill it with lead',
-        unit_price:  BigDecimal(1.99,3)
+        unit_price:  BigDecimal(1.99, 3)
       }
 
       @ir.update(263396013, attributes)
@@ -97,8 +97,8 @@ RSpec.describe ItemRepository do
       expect(item.id).to eq(263396013)
       expect(item.merchant_id).to eq(12334185)
       expect(item.name).to eq('Mechanical Pencil')
-      expect(item.description).
-        to eq('You can use it to write things and refill it with lead')
+      expect(item.description)
+        .to eq('You can use it to write things and refill it with lead')
       expect(item.unit_price).to eq(1.99)
     end
 

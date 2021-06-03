@@ -8,15 +8,17 @@ SimpleCov.start
 RSpec.describe Item do
 
   before :each do
-    @i = Item.new({
-      id:          1,
-      name:        'Pencil',
-      description: 'You can use it to write things',
-      unit_price:  BigDecimal(10.99, 4),
-      created_at:  Time.now,
-      updated_at:  Time.now,
-      merchant_id: 2
-    })
+    @i = Item.new(
+      {
+        id:          1,
+        name:        'Pencil',
+        description: 'You can use it to write things',
+        unit_price:  BigDecimal(10.99, 4),
+        created_at:  Time.now,
+        updated_at:  Time.now,
+        merchant_id: 2
+      }
+    )
   end
 
   describe 'Object Creation' do
@@ -56,8 +58,8 @@ RSpec.describe Item do
 
       expect(@i.id).to eq(1)
       expect(@i.name).to eq('Mechanical Pencil')
-      expect(@i.description).
-        to eq('You can use it to write things and refill it with lead')
+      expect(@i.description)
+        .to eq('You can use it to write things and refill it with lead')
       expect(@i.unit_price).to eq(BigDecimal(1.99, 3))
       expect(@i.updated_at).to be_a(Time)
       expect(@i.updated_at).not_to eq(intitial_update_time)
