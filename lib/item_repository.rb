@@ -39,8 +39,7 @@ class ItemRepository
   def create(attributes)
     new_id = all.max_by { |item| item.id }.id + 1
     attributes[:id] = new_id
-    item = Item.new(attributes)
-    all << item
+    all << Item.new(attributes)
   end
 
   def update(id, attributes)

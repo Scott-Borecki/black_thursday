@@ -22,9 +22,9 @@ class MerchantRepository
   end
 
   def create(attributes)
-    max_id = all.max_by { |merchant| merchant.id }
-    new_id = max_id.id + 1
-    @all << Merchant.new(attributes.merge!(id: new_id))
+    new_id = all.max_by { |merchant| merchant.id }.id + 1
+    attributes[:id] = new_id
+    @all << Merchant.new(attributes)
   end
 
   def update(id, attributes)
@@ -37,7 +37,7 @@ class MerchantRepository
 
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
-      data_hash = {id: row[:id].to_i, name: row[:name]}
+      data_hash = { id: row[:id].to_i, name: row[:name] }
       @all << Merchant.new(data_hash)
     end
   end
