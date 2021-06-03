@@ -77,11 +77,11 @@ RSpec.describe InvoiceRepository do
     end 
 
     it 'can delete Invoice by ID' do 
-      expect(@ir.all.count).to eq(19)
-      @i.all.delete(1)
-      expect(@ir.all.count).to eq(18)
+      expect(@i.all.count).to eq(19)
+      @i.delete(1)
+      expect(@i.all.count).to eq(18)
     end
-    
+
 
     
 
