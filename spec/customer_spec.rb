@@ -32,4 +32,34 @@ RSpec.describe Customer do
     end
 
   end
+
+  describe 'Object Methods' do
+
+    it 'can update the Customer with provided attributes' do
+      attributes = {
+        first_name: 'Steve',
+        last_name:  'Irwin',
+      }
+
+      intitial_update_time = @c.updated_at
+      @c.update(attributes)
+
+      expect(@c.id).to eq(6)
+      expect(@c.first_name).to eq('Steve')
+      expect(@c.last_name).to eq('Irwin')
+      expect(@c.updated_at).to be_a(Time)
+      expect(@c.updated_at).not_to eq(intitial_update_time)
+
+      attributes = { first_name: 'Paul'}
+
+      intitial_update_time = @c.updated_at
+      @c.update(attributes)
+
+      expect(@c.id).to eq(6)
+      expect(@c.first_name).to eq('Paul')
+      expect(@c.last_name).to eq('Irwin')
+      expect(@c.updated_at).to be_a(Time)
+      expect(@c.updated_at).not_to eq(intitial_update_time)
+    end
+  end
 end
