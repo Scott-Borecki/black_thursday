@@ -30,6 +30,12 @@ class InvoiceRepository
     all.find_all { |invoice| status.downcase == invoice.status.downcase }
   end 
 
+  def create(attributes)
+    new_invoice = all.max_by { |invoice| invoice.id }.id + 1
+    attributes[:id] = new_invoice
+    all << Invoice.new(attributes)
+  end
+
 
 
 

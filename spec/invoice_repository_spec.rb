@@ -50,6 +50,24 @@ RSpec.describe InvoiceRepository do
       expect(@i.find_all_by_status("squirrels")).to eq ([])
     end
 
+    it 'can create a new Invoice with attributes' do 
+      attributes = {
+        customer_id:  42000000,
+        merchant_id:  42000001,
+        status:       "pending",
+        created_at:   Time.now,
+        updated_at:   Time.now
+      }
+      @i.create(attributes)
+      i1 = @i.all.last
+
+      expect(@i.all.count).to eq(20)
+      expect(i1.customer_id).to eq(42000000)
+    end
+
+
+
+
 
 
 
