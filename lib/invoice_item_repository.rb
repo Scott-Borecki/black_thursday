@@ -16,6 +16,20 @@ class InvoiceItemRepository
     all.find_all { |invoice| id == invoice.item_id }
   end
 
+  def find_all_by_invoice_id(id)
+    all.find_all { |invoice| id == invoice.invoice_id }
+  end
+
+  def create(attributes)
+    new_id = all.max_by { |invoice| invoice.id }.id + 1
+    attributes[:id] = new_id
+    all << InvoiceItem.new(attributes)
+  end
+
+  def update(id, attributes)
+    find_by_id(id)&.update(attributes)
+  end
+
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {
