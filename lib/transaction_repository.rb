@@ -19,6 +19,13 @@ class TransactionRepository
     all.find_all { |transaction| invoice_id == transaction.invoice_id }
   end
 
+  def find_all_by_credit_card_number(credit_card_number)
+    all.find_all { |transaction| credit_card_number == transaction.credit_card_number }
+  end
+
+  def find_all_by_result(result)
+    all.find_all { |transaction| result == transaction.result }
+  end
 
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
