@@ -20,7 +20,7 @@ class InvoiceRepository
 
   def find_all_by_merchant_id(merchant_id)
     all.find_all { |invoice| merchant_id == invoice.merchant_id }
-  end 
+  end
 
   def find_all_by_status(status)
     all.find_all { |invoice| status.downcase == invoice.status.downcase }

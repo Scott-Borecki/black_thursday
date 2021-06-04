@@ -13,7 +13,7 @@ class Invoice
     @status      = data_hash[:status]
     @created_at  = data_hash[:created_at]
     @updated_at  = data_hash[:updated_at]
-  end 
+  end
 
   def update(attributes)
     attributes[:updated_at] = Time.now
