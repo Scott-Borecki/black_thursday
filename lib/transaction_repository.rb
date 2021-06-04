@@ -37,6 +37,12 @@ class TransactionRepository
     find_by_id(id)&.update(attributes)
   end
 
+  def delete(id)
+    transaction = find_by_id(id)
+    all.delete(transaction)
+  end
+
+
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {
