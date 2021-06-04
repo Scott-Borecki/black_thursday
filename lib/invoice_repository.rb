@@ -10,16 +10,12 @@ class InvoiceRepository
     populate_repository(path)
   end
 
-  def inspect
-   "#<#{self.class} #{@invoices.size} rows>"
-  end
-
   def find_by_id(id)
     all.find { |invoice| id == invoice.id }
   end
 
   def find_all_by_customer_id(customer_id)
-    all.find_all { |invoice| customer_id == invoice.customer_id}
+    all.find_all { |invoice| customer_id == invoice.customer_id }
   end
 
   def find_all_by_merchant_id(merchant_id)
@@ -28,7 +24,7 @@ class InvoiceRepository
 
   def find_all_by_status(status)
     all.find_all { |invoice| status.downcase == invoice.status.downcase }
-  end 
+  end
 
   def create(attributes)
     new_invoice = all.max_by { |invoice| invoice.id }.id + 1
@@ -38,7 +34,7 @@ class InvoiceRepository
 
   def update(id, attributes)
     find_by_id(id)&.update(attributes)
-  end 
+  end
 
   def delete(id)
     item = find_by_id(id)
@@ -60,8 +56,6 @@ class InvoiceRepository
 
     def inspect
       "#<#{self.class} #{@invoices.size} rows>"
-     end
+    end
   end
-
-
 end

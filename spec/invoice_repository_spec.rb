@@ -81,20 +81,5 @@ RSpec.describe InvoiceRepository do
       @i.delete(1)
       expect(@i.all.count).to eq(18)
     end
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
   end 
-
 end
