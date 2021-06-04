@@ -7,13 +7,11 @@ require 'simplecov'
 SimpleCov.start
 
 RSpec.describe InvoiceRepository do
-
   before :each do
     @i = InvoiceRepository.new('./spec/fixtures/invoices.csv')
   end
 
   describe 'Object Creation' do
-
     it 'exists' do
       expect(@i).to be_a(InvoiceRepository)
     end
@@ -24,8 +22,7 @@ RSpec.describe InvoiceRepository do
     end
   end
 
-  describe 'Object Methods' do
-    
+  describe 'Object Methods' do 
     it 'can return Invoice by ID' do
       expect(@i.find_by_id(1).merchant_id).to eq(12335938)
       expect(@i.find_by_id(100000000000)).to eq(nil)
@@ -47,7 +44,7 @@ RSpec.describe InvoiceRepository do
     it 'can return all Invoices by status' do
       invoices = @i.find_all_by_status(:peNding)
       expect(invoices.count).to eq(9)
-      expect(@i.find_all_by_status("squirrels")).to eq ([])
+      expect(@i.find_all_by_status('squirrels')).to eq ([])
     end
 
     it 'can create a new Invoice with attributes' do
