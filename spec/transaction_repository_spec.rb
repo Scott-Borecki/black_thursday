@@ -42,6 +42,46 @@ RSpec.describe TransactionRepository do
     it 'can return all Transactions by result status' do
       expect(@tr.find_all_by_result('failed').length).to eq(1)
       expect(@tr.find_all_by_result('success').length).to eq(6)
+      expect(@tr.find_all_by_result('hmmmm')).to eq([])
     end
+
+    it 'can create a new Item instance' do
+      attributes = {
+        invoice_id:                   8,
+        credit_card_number:           '4_242_424_242_424_242',
+        credit_card_expiration_date:  '0_220',
+        result:                       'success',
+        created_at:                   Time.now,
+        updated_at:                   Time.now
+      }
+
+      @tr.create(attributes)
+      tr_new = @tr.all.last
+
+      expect(@tr.all.length).to eq(8)
+      expect(tr_new.id).to eq(8)
+      expect(tr_new.invoice_id).to eq(8)
+      expect(tr_new.credit_card_number).to eq('4_242_424_242_424_242')
+      expect(tr_new.credit_card_expiration_date).to eq('0_220')
+      expect(tr_new.result).to eq('success')
+      expect(tr_new.created_at).to be_a(Time)
+      expect(tr_new.updated_at).to be_a(Time)
+    end
+
+    it 'can update Transaction instance with provided attributes' do
+      attributes = {
+        credit_card_number:          '400000',
+        credit_card_expiration_date: '4000',
+        result:                      'failed'
+      }
+
+      @tr.update(7, attributes)
+      item = @tr.find_by_id(7)
+      expect(item.id).to eq(7)
+      expect(item.credit_card_number).to eq(400_000)
+      expect(item.credit_card_expiration_date).to eq(4_000)
+      expect(item.result).to eq('failed')
+    end
+
   end
 end
