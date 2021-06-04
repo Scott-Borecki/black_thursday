@@ -33,5 +33,15 @@ RSpec.describe TransactionRepository do
       expect(@tr.find_all_by_invoice_id(2_179).length).to eq(2)
       expect(@tr.find_all_by_invoice_id(124_799)).to eq([])
     end
+
+    it 'can return all Transactions by credit card number' do
+      expect(@tr.find_all_by_credit_card_number(4_068_631_943_231_473).length).to eq(2)
+      expect(@tr.find_all_by_credit_card_number(4_000_000_000_000_000)).to eq([])
+    end
+
+    it 'can return all Transactions by result status' do
+      expect(@tr.find_all_by_result('failed').length).to eq(1)
+      expect(@tr.find_all_by_result('success').length).to eq(6)
+    end
   end
 end
