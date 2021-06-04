@@ -83,5 +83,10 @@ RSpec.describe TransactionRepository do
       expect(item.result).to eq('failed')
     end
 
+    it 'can delete Transaction instance by id' do
+      expect(@tr.all.count).to eq(7)
+      @tr.delete(7)
+      expect(@tr.all.count).to eq(6)
+    end
   end
 end
