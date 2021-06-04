@@ -53,9 +53,9 @@ class InvoiceRepository
       }
       @all << Invoice.new(data_hash)
     end
+  end
 
-    def inspect
-      "#<#{self.class} #{@invoices.size} rows>"
-    end
+  def inspect
+    "#<#{self.class} #{@invoices.size} rows>"
   end
 end
