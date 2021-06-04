@@ -19,9 +19,9 @@ class Transaction
 
   def update(attributes)
     attributes[:updated_at] = Time.now
-    @credit_card_number          = attributes[:credit_card_number].to_i          || @credit_card_number
-    @credit_card_expiration_date = attributes[:credit_card_expiration_date].to_i || @credit_card_expiration_date
-    @result                      = attributes[:result]                           || @result
+    @credit_card_number          = attributes[:credit_card_number]          || @credit_card_number
+    @credit_card_expiration_date = attributes[:credit_card_expiration_date] || @credit_card_expiration_date
+    @result                      = attributes[:result]                      || @result
     @updated_at                  = attributes[:updated_at]
   end
 end

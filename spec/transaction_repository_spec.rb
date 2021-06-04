@@ -35,14 +35,14 @@ RSpec.describe TransactionRepository do
     end
 
     it 'can return all Transactions by credit card number' do
-      expect(@tr.find_all_by_credit_card_number(4_068_631_943_231_473).length).to eq(2)
-      expect(@tr.find_all_by_credit_card_number(4_000_000_000_000_000)).to eq([])
+      expect(@tr.find_all_by_credit_card_number('4068631943231473').length).to eq(2)
+      expect(@tr.find_all_by_credit_card_number('4000000000000000')).to eq([])
     end
 
     it 'can return all Transactions by result status' do
-      expect(@tr.find_all_by_result('failed').length).to eq(1)
-      expect(@tr.find_all_by_result('success').length).to eq(6)
-      expect(@tr.find_all_by_result('hmmmm')).to eq([])
+      expect(@tr.find_all_by_result(:failed).length).to eq(1)
+      expect(@tr.find_all_by_result(:success).length).to eq(6)
+      expect(@tr.find_all_by_result(:hmmmm)).to eq([])
     end
 
     it 'can create a new Item instance' do
@@ -78,8 +78,8 @@ RSpec.describe TransactionRepository do
       @tr.update(7, attributes)
       item = @tr.find_by_id(7)
       expect(item.id).to eq(7)
-      expect(item.credit_card_number).to eq(400_000)
-      expect(item.credit_card_expiration_date).to eq(4_000)
+      expect(item.credit_card_number).to eq('400000')
+      expect(item.credit_card_expiration_date).to eq('4000')
       expect(item.result).to eq('failed')
     end
 
