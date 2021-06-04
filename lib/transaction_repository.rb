@@ -45,13 +45,13 @@ class TransactionRepository
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {
-        id:                                 row[:id].to_i,
-        invoice_id:                         row[:invoice_id].to_i,
-        credit_card_number:                 row[:credit_card_number],
-        credit_card_expiration_date:        row[:credit_card_expiration_date],
-        result:                             row[:result].to_sym,
-        created_at:                         Time.parse(row[:created_at]),
-        updated_at:                         Time.parse(row[:updated_at])
+        id:                          row[:id].to_i,
+        invoice_id:                  row[:invoice_id].to_i,
+        credit_card_number:          row[:credit_card_number],
+        credit_card_expiration_date: row[:credit_card_expiration_date],
+        result:                      row[:result].to_sym,
+        created_at:                  Time.parse(row[:created_at]),
+        updated_at:                  Time.parse(row[:updated_at])
       }
       @all << Transaction.new(data_hash)
     end
