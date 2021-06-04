@@ -14,7 +14,6 @@ RSpec.describe InvoiceItemRepository do
   end
 
   describe 'Instantiation' do
-
     it 'exists' do
       expect(@iir).to be_a(InvoiceItemRepository)
     end
@@ -25,7 +24,6 @@ RSpec.describe InvoiceItemRepository do
     end
 
     describe 'Object Methods' do
-
       it 'finds items by id' do
         expect(@iir.find_by_id(1).invoice_id).to eq(1)
         expect(@iir.find_by_id(11)).to eq(nil)
