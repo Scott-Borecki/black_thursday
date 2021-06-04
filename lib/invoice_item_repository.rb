@@ -1,4 +1,7 @@
 require_relative 'invoice_item'
+require 'CSV'
+require 'bigdecimal'
+require 'time'
 
 class InvoiceItemRepository
   attr_reader :all
@@ -28,6 +31,11 @@ class InvoiceItemRepository
 
   def update(id, attributes)
     find_by_id(id)&.update(attributes)
+  end
+
+  def delete(id)
+    invoice_item = find_by_id(id)
+    all.delete(invoice_item)
   end
 
   def populate_repository(path)

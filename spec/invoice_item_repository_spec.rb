@@ -69,13 +69,21 @@ RSpec.describe InvoiceItemRepository do
       it 'can update InvoiceItem w/attributes' do
         attributes = {
           quantity:         11,
-          unit_price:       BigDecimal(12.99, 3)
+          unit_price:       BigDecimal(12.99, 4)
         }
 
-        @iir.update(11, attributes)
-        expect(@iir.id).to eq(11)
-        expect(@iir.quantity).to eq(11)
-        expect(@iir.unit_price).to eq(12.99)
+        @iir.update(10, attributes)
+        expect(@iir.find_by_id(10).item_id).to eq(263523644)
+        expect(@iir.find_by_id(10).quantity).to eq(11)
+        expect(@iir.find_by_id(10).unit_price).to eq(12.99)
+      end
+
+      it 'can delete InvoiceItems' do
+        expect(@iir.find_by_id(10).item_id).to eq(263523644)
+
+        @iir.delete(10)
+
+        expect(@iir.find_by_id(10)).to be nil
       end
     end
   end

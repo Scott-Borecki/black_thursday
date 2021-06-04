@@ -39,5 +39,17 @@ RSpec.describe InvoiceItem do
       expect(@ii.unit_price_to_dollars).to eq(10.99)
       expect(@ii.unit_price_to_dollars).to be_a(Float)
     end
+
+    it 'updates attributes' do
+      attributes = {
+        quantity: 11,
+        unit_price: 12.99
+      }
+
+      @ii.update(attributes)
+
+      expect(@ii.quantity).to eq(11)
+      expect(@ii.unit_price).to eq(12.99)
+    end
   end
 end
