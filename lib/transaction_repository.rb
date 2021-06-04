@@ -42,7 +42,6 @@ class TransactionRepository
     all.delete(transaction)
   end
 
-
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {
