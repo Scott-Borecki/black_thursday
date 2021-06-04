@@ -18,7 +18,7 @@ class InvoiceRepository
     all.find { |invoice| id == invoice.id }
   end
 
-  def find_by_customer_id(customer_id)
+  def find_all_by_customer_id(customer_id)
     all.find_all { |invoice| customer_id == invoice.customer_id}
   end
 
@@ -45,21 +45,13 @@ class InvoiceRepository
     all.delete(item)
   end
 
-
-
-
-
-
-
-
-
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {
         id:           row[:id].to_i,
         customer_id:  row[:customer_id].to_i,
         merchant_id:  row[:merchant_id].to_i,
-        status:       row[:status],
+        status:       row[:status].to_sym,
         created_at:   Time.parse(row[:created_at]),
         updated_at:   Time.parse(row[:updated_at])
       }

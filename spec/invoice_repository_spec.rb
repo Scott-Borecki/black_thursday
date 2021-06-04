@@ -32,10 +32,10 @@ RSpec.describe InvoiceRepository do
     end 
 
     it 'can return all Invoices by customer ID' do 
-      invoices = @i.find_by_customer_id(1)
+      invoices = @i.find_all_by_customer_id(1)
       expect(invoices[0].merchant_id).to eq(12335938)
       expect(invoices.count).to eq(8)
-      expect(@i.find_by_customer_id(100000000000)).to eq([])
+      expect(@i.find_all_by_customer_id(100000000000)).to eq([])
     end
 
     it 'can return all Invoices by merchant ID' do 
@@ -45,7 +45,7 @@ RSpec.describe InvoiceRepository do
     end
 
     it 'can return all Invoices by status' do 
-      invoices = @i.find_all_by_status("peNding")
+      invoices = @i.find_all_by_status(:peNding)
       expect(invoices.count).to eq(9)
       expect(@i.find_all_by_status("squirrels")).to eq ([])
     end
@@ -71,7 +71,7 @@ RSpec.describe InvoiceRepository do
       }
 
       @i.update(1, attributes)
-      invoice = @i.all.find_by_id(1)
+      invoice = @i.find_by_id(1)
 
       expect(invoice.status).to eq("shipped")
     end 
