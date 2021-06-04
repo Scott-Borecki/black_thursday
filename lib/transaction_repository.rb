@@ -27,13 +27,23 @@ class TransactionRepository
     all.find_all { |transaction| result == transaction.result }
   end
 
+  def create(attributes)
+    new_id = all.max_by { |transaction| transaction.id }.id + 1
+    attributes[:id] = new_id
+    all << Transaction.new(attributes)
+  end
+
+  def update(id, attributes)
+    find_by_id(id)&.update(attributes)
+  end
+
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {
         id:                                 row[:id].to_i,
         invoice_id:                         row[:invoice_id].to_i,
         credit_card_number:                 row[:credit_card_number].to_i,
-        credit_card_number_expiration_date: row[:credit_card_number_expiration_date].to_i,
+        credit_card_expiration_date:        row[:credit_card_number_expiration_date].to_i,
         result:                             row[:result],
         created_at:                         Time.parse(row[:created_at]),
         updated_at:                         Time.parse(row[:updated_at])
