@@ -6,7 +6,6 @@ require 'bigdecimal'
 SimpleCov.start
 
 RSpec.describe InvoiceItem do
-
   before :each do
   @ii = InvoiceItem.new(
     id:         6,
@@ -20,7 +19,6 @@ RSpec.describe InvoiceItem do
   end
 
   describe 'Instantiation' do
-
     it 'exists' do
       expect(@ii).to be_a(InvoiceItem)
     end

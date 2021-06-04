@@ -9,7 +9,6 @@ require 'bigdecimal'
 SimpleCov.start
 
 RSpec.describe InvoiceItemRepository do
-
   before :each do
     @iir = InvoiceItemRepository.new('./spec/fixtures/invoice_item_repository.csv')
   end
@@ -73,13 +72,13 @@ RSpec.describe InvoiceItemRepository do
         }
 
         @iir.update(10, attributes)
-        expect(@iir.find_by_id(10).item_id).to eq(263523644)
+        expect(@iir.find_by_id(10).item_id).to eq(263_523_644)
         expect(@iir.find_by_id(10).quantity).to eq(11)
         expect(@iir.find_by_id(10).unit_price).to eq(12.99)
       end
 
       it 'can delete InvoiceItems' do
-        expect(@iir.find_by_id(10).item_id).to eq(263523644)
+        expect(@iir.find_by_id(10).item_id).to eq(263_523_644)
 
         @iir.delete(10)
 
