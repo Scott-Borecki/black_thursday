@@ -65,6 +65,10 @@ RSpec.describe SalesAnalyst do
       expect(@sales_analyst.average_invoices_per_merchant_standard_deviation).to eq(3.29)
     end 
 
+    it 'can return top merchants by invoice count' do
+      expect(@sales_analyst.top_merchants_by_invoice_count).to eq([])
+    end 
+
 
   end
 end
