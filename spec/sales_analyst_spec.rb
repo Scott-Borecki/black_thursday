@@ -38,5 +38,15 @@ RSpec.describe SalesAnalyst do
     it 'can return the total number of merchants' do
       expect(@sales_analyst.total_num_merchants). to eq(475)
     end
+
+    it 'can return the average' do
+      set = [3,4,5]
+      expect(@sales_analyst.average(set)).to eq(4)
+    end
+
+    xit 'can return the standard deviation' do
+      set = [3,4,5]
+      expect(@sales_analyst.std_dev(set)).to eq(1)
+    end
   end
 end

@@ -16,4 +16,16 @@ class SalesAnalyst
     @sales_engine.merchants.all.uniq.count
   end
 
+  def average(numbers)
+    numbers.sum.fdiv(numbers.count)
+  end
+
+  # def std_dev(numbers)
+  #   average = numbers.sum / numbers.count
+  # end
+
+  # def average_items_per_merchant
+  #   std_dev(average_items_per_merchant)
+  # end
+
 end
