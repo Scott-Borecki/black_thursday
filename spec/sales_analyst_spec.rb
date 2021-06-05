@@ -6,12 +6,32 @@ SimpleCov.start
 
 RSpec.describe SalesAnalyst do
 
-  describe 'Object Creation' do
-    let(:sales_engine) { "Sales Engine" }
+  before :each do
+    @data_hash = {
+      items:         './data/items.csv',
+      merchants:     './data/merchants.csv',
+      invoices:      './data/invoices.csv',
+      invoice_items: './data/invoice_items.csv',
+      transactions:  './data/transactions.csv',
+      customers:     './data/customers.csv'
+    }
+    @sales_engine = SalesEngine.from_csv(@data_hash)
+  end
 
+  describe 'Object Creation' do
     it 'exists' do
-      sa = SalesAnalyst.new(sales_engine)
-      expect(sa).to be_an_instance_of(SalesAnalyst)
+      sales_analyst = SalesAnalyst.new(@sales_engine)
+      expect(sales_analyst).to be_an_instance_of(SalesAnalyst)
+    end
+  end
+
+  describe 'Object Methods' do
+    before :each do
+      @sales_analyst = SalesAnalyst.new(@sales_engine)
+    end
+
+    it 'can return the average items per merchant' do
+      expect(@sales_analyst.average_items_per_merchant).to eq(2.88)
     end
   end
 end
