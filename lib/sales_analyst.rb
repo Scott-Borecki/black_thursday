@@ -33,4 +33,14 @@ class SalesAnalyst
     end
     std_dev(num_items_per_merchant)
   end
+
+  def total_num_invoices
+    @sales_engine.invoices.all.uniq.count
+  end 
+
+  
+  def average_invoices_per_merchant
+    @sales_engine..merchants
+  end 
+  
 end
