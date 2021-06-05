@@ -44,7 +44,7 @@ RSpec.describe SalesAnalyst do
       expect(@sales_analyst.average(set)).to eq(4)
     end
 
-    xit 'can return the standard deviation' do
+    it 'can return the standard deviation' do
       set = [3,4,5]
       expect(@sales_analyst.std_dev(set)).to eq(1)
     end

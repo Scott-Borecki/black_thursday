@@ -20,12 +20,10 @@ class SalesAnalyst
     numbers.sum.fdiv(numbers.count)
   end
 
-  # def std_dev(numbers)
-  #   average = numbers.sum / numbers.count
-  # end
-
-  # def average_items_per_merchant
-  #   std_dev(average_items_per_merchant)
-  # end
-
+  def std_dev(numbers)
+    numerator = numbers.reduce(0) do |sum, number|
+      sum + (number.to_f - average(numbers))**2
+    end
+    numerator.fdiv(2)**0.5
+  end
 end
