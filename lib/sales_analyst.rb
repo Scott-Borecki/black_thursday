@@ -33,4 +33,10 @@ class SalesAnalyst
     end
     std_dev(num_items_per_merchant)
   end
+
+  def invoice_status(status)
+    status_count = @sales_engine.invoices.find_all_by_status(status).count
+    total_count = @sales_engine.invoices.all.count
+    (status_count.to_f / total_count * 100).round(2)
+  end
 end
