@@ -1,6 +1,8 @@
 require 'rspec'
 require_relative '../lib/sales_engine'
 require_relative '../lib/sales_engine'
+require 'simplecov'
+SimpleCov.start
 
 RSpec.describe SalesEngine do
 
