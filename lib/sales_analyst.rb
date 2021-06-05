@@ -38,9 +38,8 @@ class SalesAnalyst
     @sales_engine.invoices.all.uniq.count
   end 
 
-  
   def average_invoices_per_merchant
-    @sales_engine..merchants
+    total_num_invoices.fdiv(total_num_merchants).round(2)
   end 
   
 end
