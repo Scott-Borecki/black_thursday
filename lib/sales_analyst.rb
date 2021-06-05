@@ -42,4 +42,5 @@ class SalesAnalyst
     total_num_invoices.fdiv(total_num_merchants).round(2)
   end 
   
+  
 end
