@@ -24,6 +24,6 @@ class SalesAnalyst
     numerator = numbers.reduce(0) do |sum, number|
       sum + (number.to_f - average(numbers))**2
     end
-    numerator.fdiv(2)**0.5
+    numerator.fdiv(numbers.count - 1)**0.5
   end
 end
