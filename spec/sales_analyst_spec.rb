@@ -5,8 +5,7 @@ require 'simplecov'
 SimpleCov.start
 
 RSpec.describe SalesAnalyst do
-
-  before :each do
+  before :all do
     @data_hash = {
       items:         './data/items.csv',
       merchants:     './data/merchants.csv',
@@ -16,6 +15,7 @@ RSpec.describe SalesAnalyst do
       customers:     './data/customers.csv'
     }
     @sales_engine = SalesEngine.from_csv(@data_hash)
+    @sales_analyst = SalesAnalyst.new(@sales_engine)
   end
 
   describe 'Object Creation' do
@@ -26,12 +26,17 @@ RSpec.describe SalesAnalyst do
   end
 
   describe 'Object Methods' do
-    before :each do
-      @sales_analyst = SalesAnalyst.new(@sales_engine)
-    end
 
     it 'can return the average items per merchant' do
       expect(@sales_analyst.average_items_per_merchant).to eq(2.88)
+    end
+
+    it 'can return the total number of items' do
+      expect(@sales_analyst.total_num_items). to eq(1367)
+    end
+
+    it 'can return the total number of merchants' do
+      expect(@sales_analyst.total_num_merchants). to eq(475)
     end
   end
 end
