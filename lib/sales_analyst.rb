@@ -24,6 +24,13 @@ class SalesAnalyst
     numerator = numbers.reduce(0) do |sum, number|
       sum + (number.to_f - average(numbers))**2
     end
-    numerator.fdiv(numbers.count - 1)**0.5
+    (numerator.fdiv(numbers.count - 1)**0.5).round(2)
+  end
+
+  def average_items_per_merchant_standard_deviation
+    num_items_per_merchant = @sales_engine.merchants.all.map do |merchant|
+      @sales_engine.items.find_all_by_merchant_id(merchant.id).count
+    end
+    std_dev(num_items_per_merchant)
   end
 end
