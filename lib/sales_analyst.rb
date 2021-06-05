@@ -41,6 +41,11 @@ class SalesAnalyst
   def average_invoices_per_merchant
     total_num_invoices.fdiv(total_num_merchants).round(2)
   end 
-  
-  
+
+  def average_invoices_per_merchant_standard_deviation
+    num_invoices_per_merchant = @sales_engine.merchants.all.map do |merchant|
+      @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count
+    end 
+    std_dev(num_invoices_per_merchant)
+  end 
 end
