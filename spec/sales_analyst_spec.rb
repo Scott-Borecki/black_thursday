@@ -56,5 +56,9 @@ RSpec.describe SalesAnalyst do
     it 'can return merchants with pending invoices' do
       expect(@sales_analyst.merchants_with_pending_invoices.count).to eq(476)
     end
+
+    it 'can return merchants that only sell one item' do
+      expect(@sales_analyst.merchants_with_only_one_item.count).to eq(243)
+    end
   end
 end
