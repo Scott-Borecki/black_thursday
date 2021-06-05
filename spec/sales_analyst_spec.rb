@@ -52,5 +52,9 @@ RSpec.describe SalesAnalyst do
     it 'can return average items by merchant standard deviation' do
       expect(@sales_analyst.average_items_per_merchant_standard_deviation).to eq(3.26)
     end
+
+    it 'can return merchants with pending invoices' do
+      expect(@sales_analyst.merchants_with_pending_invoices.count).to eq(476)
+    end
   end
 end
