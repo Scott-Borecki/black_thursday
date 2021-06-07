@@ -60,29 +60,34 @@ class SalesAnalyst
     std_dev(num_items_per_merchant)
   end
 
+  def successful_transaction?(invoice_id)
+    transactions.find_all_by_invoice_id(invoice_id).any? do |transaction|
+      transaction.result == :success
+    end
+  end
+
   def merchants_with_pending_invoices
     invoices.all.reduce([]) do |array, invoice|
       merchant = merchants.find_by_id(invoice.merchant_id)
-      successful_transaction = transactions.find_all_by_invoice_id(invoice.id).any? { |transaction| transaction.result == :success }
-      array << merchant unless successful_transaction
+      array << merchant unless successful_transaction?(invoice.id)
       array
     end.uniq
   end
 
-  # def merchants_with_only_one_item
-  #   merchants.all.reduce([]) do |array, merchant|
-  #     array << merchant if items.find_all_by_merchant_id(merchant.id).count == 1
-  #     array
-  #   end
-  # end
-
-  def merchants_with_only_one_item_registered_in_month(month)
-    reduce([]) do ||
-      merchant =
-      one_item_registered_in_month =
-      array << merchant if one_item_registered_in_month
+  def merchants_with_only_one_item
+    merchants.all.reduce([]) do |array, merchant|
+      array << merchant if items.find_all_by_merchant_id(merchant.id).count == 1
       array
     end
+  end
+
+  def merchants_with_only_one_item_registered_in_month(month)
+    # reduce([]) do ||
+    #   merchant =
+    #   one_item_registered_in_month =
+    #   array << merchant if one_item_registered_in_month
+    #   array
+    # end
   end
 
   def revenue_by_merchant
