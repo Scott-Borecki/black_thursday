@@ -48,4 +48,37 @@ class SalesAnalyst
     end 
     std_dev(num_invoices_per_merchant)
   end 
+
+  def num_of_invoices(id)
+    @sales_engine.invoices.find_all_by_merchant_id(id).count
+  end
+
+  def top_merchants_by_invoice_count
+    mean = total_num_invoices.fdiv(total_num_merchants).round(2)
+    num_invoices = @sales_engine.merchants.all.map do |merchant|
+      @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count
+    end
+    
+    inv_std_dev = std_dev(num_invoices)
+    two_devs = mean + (inv_std_dev * 2)
+    @sales_engine.merchants.all.reduce([]) do |array, merchant|
+      array << merchant if @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count > two_devs
+      array
+    end
+  end 
+
+  def bottom_merchants_by_invoice_count
+    mean = total_num_invoices.fdiv(total_num_merchants).round(2)
+    num_invoices = @sales_engine.merchants.all.map do |merchant|
+      @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count
+    end
+
+    inv_std_dev = std_dev(num_invoices)
+    two_devs = mean - (inv_std_dev * 2)
+    @sales_engine.merchants.all.reduce([]) do |array, merchant|
+      array << merchant if @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count < two_devs
+      array
+    end
+  end 
+
 end
