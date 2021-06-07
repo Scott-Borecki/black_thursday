@@ -79,7 +79,10 @@ RSpec.describe SalesAnalyst do
     end
 
     it 'can return total revenue for a merchant' do
-      expect(@sales_analyst.revenue_by_merchant(12334194)).to eq(1227.15)
+      expected = @sales_analyst.revenue_by_merchant(12334194)
+
+      expect(expected).to eq BigDecimal(expected)
+      expect(expected.class).to eq BigDecimal
     end
   end
 end

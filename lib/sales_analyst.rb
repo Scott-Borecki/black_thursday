@@ -104,12 +104,22 @@ class SalesAnalyst
   end
 
   def revenue_by_merchant(merchant_id)
-    invoices.find_all_by_merchant_id(merchant_id).reduce(0) do |sum, invoice|
-      if successful_transaction?(invoice.id)
-        sum = invoice_items.find_all_by_invoice_id(invoice.id).sum do |invoice_item|
+    # invoices.find_all_by_merchant_id(merchant_id).reduce(0) do |sum, invoice|
+    #   if successful_transaction?(invoice.id)
+    #     sum = invoice_items.find_all_by_invoice_id(invoice.id).sum do |invoice_item|
+    #       invoice_item.unit_price * invoice_item.quantity
+    #     end
+    #     sum
+    #   end
+    # end
+
+    invoices.find_all_by_merchant_id(merchant_id).sum do |invoice|
+      if successful_transaction?(invoice.id) == false
+        0
+      else
+        invoice_items.find_all_by_invoice_id(invoice.id).sum do |invoice_item|
           invoice_item.unit_price * invoice_item.quantity
         end
-        sum
       end
     end
   end
