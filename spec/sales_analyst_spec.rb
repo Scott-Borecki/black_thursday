@@ -66,8 +66,13 @@ RSpec.describe SalesAnalyst do
     end 
 
     it 'can return top merchants by invoice count' do
-      expect(@sales_analyst.top_merchants_by_invoice_count).to eq([])
+      expect(@sales_analyst.top_merchants_by_invoice_count.count).to eq(12)
     end 
+
+    it 'can return bottom merchants by invoice count' do 
+      expect(@sales_analyst.bottom_merchants_by_invoice_count.count).to eq(0)
+    end
+
 
 
   end
