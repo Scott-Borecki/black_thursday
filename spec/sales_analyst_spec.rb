@@ -62,5 +62,9 @@ RSpec.describe SalesAnalyst do
     it 'can identify if an invoice is paid in full' do
       expect(@sales_analyst.invoice_paid_in_full?(2179)).to eq(true)
     end
+
+    it 'can return the total dollar amount of an invoice' do
+      expect(@sales_analyst.invoice_total(2179)).to eq(0.3107511e5)
+    end
   end
 end
