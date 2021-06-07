@@ -75,14 +75,19 @@ class SalesAnalyst
   end
 
   def merchants_with_only_one_item
-    merchants.all.reduce([]) do |array, merchant|
-      array << merchant if items.find_all_by_merchant_id(merchant.id).count == 1
-      array
+    merchants.all.find_all do |merchant|
+      items.find_all_by_merchant_id(merchant.id).count == 1
     end
   end
 
   def merchants_with_only_one_item_registered_in_month(month)
-    # reduce([]) do ||
+    # # convert month input to first three letters
+    # month_abb = month[0..2]
+    # m = Time.new(2021, month_abb).month
+    #
+    # merchant.created_at.month
+    #
+    # items.all.reduce([]) do |ddddddd|
     #   merchant =
     #   one_item_registered_in_month =
     #   array << merchant if one_item_registered_in_month
