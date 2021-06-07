@@ -33,4 +33,10 @@ class SalesAnalyst
     end
     std_dev(num_items_per_merchant)
   end
+
+  def merchants_with_high_item_count
+    @sales_engine.merchants.all.find_all do |merchant|
+      @sales_engine.items.find_all_by_merchant_id(merchant.id).count >= average_items_per_merchant_standard_deviation + average_items_per_merchant
+    end
+  end
 end
