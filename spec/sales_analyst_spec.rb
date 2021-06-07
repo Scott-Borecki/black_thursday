@@ -64,5 +64,9 @@ RSpec.describe SalesAnalyst do
     it 'can return the average average price per merchant' do
       expect(@sales_analyst.average_average_price_per_merchant).to eq(350.29)
     end
+
+    it 'can return "Golden Items" 2 standard deviations above average price' do
+      expect(sales_analyst.golden_items).to eq(5)
+    end
   end
 end
