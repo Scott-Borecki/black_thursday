@@ -82,9 +82,17 @@ class SalesAnalyst
 
   def merchants_with_only_one_item_registered_in_month(month)
     # # convert month input to first three letters
-    # month_abb = month[0..2]
-    # m = Time.new(2021, month_abb).month
-    #
+    month_abb = month[0..2]
+    month_integer = Time.new(2021, month_abb).month
+
+    merchants.all.find_all do |merchant|
+      count = invoices.find_all_by_merchant_id(merchant.id).count do |invoice|
+        invoice.created_at.month == month_integer
+      end
+      merchant.created_at.month == month_integer &&
+      count == 1
+    end
+
     # merchant.created_at.month
     #
     # items.all.reduce([]) do |ddddddd|
@@ -95,13 +103,14 @@ class SalesAnalyst
     # end
   end
 
-  def revenue_by_merchant
-    # find all successful transactions for merchant and sum.
-    # merchant id is not in transactions, so need to find all invoices related to merchant id first.
-    # the unit price is not shown on the invoice or transaction,
-    # so need to calculate the amount on the invoice item with quantity and unit_price for each invoice item on the invoice
-    #
-    # find all invoice ids by merchant id ... then find all successful transactions for invoice ids ... then for each invoice id, and sum
+  def revenue_by_merchant(merchant_id)
+    invoices.find_all_by_merchant_id(merchant_id).reduce(0) do |sum, invoice|
+      if successful_transaction?(invoice.id)
+        sum = invoice_items.find_all_by_invoice_id(invoice.id).sum do |invoice_item|
+          invoice_item.unit_price * invoice_item.quantity
+        end
+        sum
+      end
+    end
   end
-
 end
