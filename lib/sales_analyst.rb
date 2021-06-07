@@ -46,4 +46,11 @@ class SalesAnalyst
     end
     (item_prices.sum / BigDecimal(item_prices.count)).round(2)
   end
+
+  def average_average_price_per_merchant
+    all_merchant_averages = @sales_engine.merchants.all.map do |merchant|
+    average_item_price_for_merchant(merchant.id)
+    end
+    (all_merchant_averages.sum / BigDecimal(all_merchant_averages.count)).round(2)
+  end
 end
