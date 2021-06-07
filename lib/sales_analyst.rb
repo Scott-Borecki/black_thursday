@@ -61,44 +61,26 @@ class SalesAnalyst
   end
 
   def merchants_with_pending_invoices
-    # find all invoices with :pending status
-      #=> return array of invoices
-    # map over invoice array to return merchant id
-      #=> return array of merchant IDs
-    # uniq to delete duplicate merchant ids
-      #=>return array of unique merchant ids
-    # use merchants.find_by_id(merchant_id) to find each merchant object and reduce into an empty array
-    #
-    # merchant_ids = @sales_engine.invoices.all.map do |invoice|
-    #   find_all_by_status(:pending).merchant_id
-    # end.uniq
-
-    # merchant_ids = @sales_engine.invoices.find_all_by_status(:pending).map do |invoice|
-    #   invoice.merchant_id
-    # end
-    # require "pry"; binding.pry
-    #
-    # merchant_ids.uniq
-    # #
-    # merchants = merchant_ids.map do |merchant_id|
-    #   @sales_engine.merchants.find_by_id(merchant_id)
-    # end
-
-    transactions.all.reduce([]) do |array, transaction|
-      invoice_id = transaction.invoice_id
-      merchant_id = invoices.find_by_id(invoice_id).merchant_id
-      transactions_by_invoice = transactions.find_all_by_invoice_id(invoice_id)
-      merchant = merchants.find_by_id(merchant_id)
-      array << merchant if transactions_by_invoice.none? do |transaction_invoice|
-        transaction_invoice.result == :success
-      end
+    invoices.all.reduce([]) do |array, invoice|
+      merchant = merchants.find_by_id(invoice.merchant_id)
+      successful_transaction = transactions.find_all_by_invoice_id(invoice.id).any? { |transaction| transaction.result == :success }
+      array << merchant unless successful_transaction
       array
-    end
+    end.uniq
   end
 
-  def merchants_with_only_one_item
-    merchants.all.reduce([]) do |array, merchant|
-      array << merchant if items.find_all_by_merchant_id(merchant.id).count == 1
+  # def merchants_with_only_one_item
+  #   merchants.all.reduce([]) do |array, merchant|
+  #     array << merchant if items.find_all_by_merchant_id(merchant.id).count == 1
+  #     array
+  #   end
+  # end
+
+  def merchants_with_only_one_item_registered_in_month(month)
+    reduce([]) do ||
+      merchant =
+      one_item_registered_in_month =
+      array << merchant if one_item_registered_in_month
       array
     end
   end
@@ -106,10 +88,10 @@ class SalesAnalyst
   def revenue_by_merchant
     # find all successful transactions for merchant and sum.
     # merchant id is not in transactions, so need to find all invoices related to merchant id first.
-    # the unit price is not shown on the invoice or transaction, so need to calculate the amount on the invoice item with quantity and unit_price for each invoice item on the invoice
+    # the unit price is not shown on the invoice or transaction,
+    # so need to calculate the amount on the invoice item with quantity and unit_price for each invoice item on the invoice
     #
     # find all invoice ids by merchant id ... then find all successful transactions for invoice ids ... then for each invoice id, and sum
-
   end
 
 end
