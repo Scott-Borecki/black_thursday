@@ -45,4 +45,12 @@ class SalesAnalyst
     success = transactions.find_all {|transaction| transaction.result == :success}
     success.count >= 1
   end
+
+  def invoice_total(invoice_id)
+    invoice_items = @sales_engine.invoice_items.find_all_by_invoice_id(invoice_id)
+    big_decimal_total = invoice_items.map do |invoice|
+      invoice.unit_price * invoice.quantity
+    end.sum
+    big_decimal_total
+  end
 end
