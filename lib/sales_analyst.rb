@@ -123,4 +123,10 @@ class SalesAnalyst
       end
     end
   end
+
+  def top_revenue_earners(x = 20)
+    merchants.all.max_by(x) do |merchant|
+      revenue_by_merchant(merchant.id)
+    end
+  end
 end
