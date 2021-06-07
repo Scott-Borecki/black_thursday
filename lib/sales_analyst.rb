@@ -44,6 +44,6 @@ class SalesAnalyst
     item_prices = @sales_engine.items.find_all_by_merchant_id(merchant_id).map do |item|
       item.unit_price
     end
-    (item_prices.sum.to_f / item_prices.count).round(2)
+    (item_prices.sum / BigDecimal(item_prices.count)).round(2)
   end
 end
