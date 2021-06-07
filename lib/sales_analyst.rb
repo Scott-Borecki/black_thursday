@@ -36,18 +36,18 @@ class SalesAnalyst
 
   def total_num_invoices
     @sales_engine.invoices.all.uniq.count
-  end 
+  end
 
   def average_invoices_per_merchant
     total_num_invoices.fdiv(total_num_merchants).round(2)
-  end 
+  end
 
   def average_invoices_per_merchant_standard_deviation
     num_invoices_per_merchant = @sales_engine.merchants.all.map do |merchant|
       @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count
-    end 
+    end
     std_dev(num_invoices_per_merchant)
-  end 
+  end
 
   def num_of_invoices_by_merchant(id)
     @sales_engine.invoices.find_all_by_merchant_id(id).count
@@ -58,14 +58,14 @@ class SalesAnalyst
     num_invoices = @sales_engine.merchants.all.map do |merchant|
       @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count
     end
-    require "pry"; binding.pry
+
     inv_std_dev = std_dev(num_invoices)
     two_devs = mean + (inv_std_dev * 2)
     @sales_engine.merchants.all.reduce([]) do |array, merchant|
       array << merchant if @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count > two_devs
       array
     end
-  end 
+  end
 
   def bottom_merchants_by_invoice_count
     mean = total_num_invoices.fdiv(total_num_merchants).round(2)
@@ -79,24 +79,25 @@ class SalesAnalyst
       array << merchant if @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count < two_devs
       array
     end
-  end 
+  end
 
   def weekday(date)
     date.strftime("%A")
-  end 
+  end
 
   def count_days(day)
-    @sales_engine.invoices.all.count do |invoice| 
+    @sales_engine.invoices.all.count do |invoice|
      weekday(invoice.created_at) == day
     end
-  end 
+  end
   
   def top_days_by_invoice_count
     mean = total_num_invoices.fdiv(7).round(2)
     days = {}
-    @sales_engine.invoices.all.each do |invoice| 
+    @sales_engine.invoices.all.each do |invoice|
       days[count_days(weekday(invoice.created_at))] = weekday(invoice.created_at)
-    end 
+    end
+
     nums = days.keys
     days_std_dev = std_dev(nums)
     one_std_dev = mean + days_std_dev
@@ -105,7 +106,7 @@ class SalesAnalyst
       if invoice_count > one_std_dev
         days_with_invoice << day
       end
-    end 
+    end
     days_with_invoice
-  end 
+  end
 end
