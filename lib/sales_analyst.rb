@@ -49,7 +49,7 @@ class SalesAnalyst
     std_dev(num_invoices_per_merchant)
   end 
 
-  def num_of_invoices(id)
+  def num_of_invoices_by_merchant(id)
     @sales_engine.invoices.find_all_by_merchant_id(id).count
   end
 
