@@ -39,4 +39,11 @@ class SalesAnalyst
       @sales_engine.items.find_all_by_merchant_id(merchant.id).count >= average_items_per_merchant_standard_deviation + average_items_per_merchant
     end
   end
+
+  def average_item_price_for_merchant(merchant_id)
+    item_prices = @sales_engine.items.find_all_by_merchant_id(merchant_id).map do |item|
+      item.unit_price
+    end
+    (item_prices.sum.to_f / item_prices.count).round(2)
+  end
 end
