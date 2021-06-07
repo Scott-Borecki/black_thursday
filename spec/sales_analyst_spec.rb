@@ -74,11 +74,7 @@ RSpec.describe SalesAnalyst do
     end
 
     it 'can return top days by invoice count' do
-      expect(@sales_analyst.top_days_by_invoice_count).to eq("Wednesday")
-    end 
-
-    it 'can convert date into weekday' do
-      expect(@sales_analyst.weekday(2009-02-07)).to eq("Saturday")
+      expect(@sales_analyst.top_days_by_invoice_count.first).to eq("Wednesday")
     end 
   end
 end
