@@ -69,15 +69,16 @@ RSpec.describe SalesAnalyst do
       expect(@sales_analyst.top_merchants_by_invoice_count.count).to eq(12)
     end 
 
-    it 'can return bottom merchants by invoice count' do 
+    it 'can return bottom merchants by invoice count' do
       expect(@sales_analyst.bottom_merchants_by_invoice_count.count).to eq(4)
     end
 
-    it 'can return top days by invoice count' do 
-      expect(@sales_analyst.top_days_by_invoice_count).to eq("Sunday", "Saturday")
+    it 'can return top days by invoice count' do
+      expect(@sales_analyst.top_days_by_invoice_count).to eq("Wednesday")
     end 
 
-
-
+    it 'can convert date into weekday' do
+      expect(@sales_analyst.weekday(2009-02-07)).to eq("Saturday")
+    end 
   end
 end
