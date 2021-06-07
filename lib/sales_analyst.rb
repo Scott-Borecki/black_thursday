@@ -58,7 +58,7 @@ class SalesAnalyst
     num_invoices = @sales_engine.merchants.all.map do |merchant|
       @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count
     end
-    
+    require "pry"; binding.pry
     inv_std_dev = std_dev(num_invoices)
     two_devs = mean + (inv_std_dev * 2)
     @sales_engine.merchants.all.reduce([]) do |array, merchant|
