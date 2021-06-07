@@ -60,5 +60,9 @@ RSpec.describe SalesAnalyst do
     it 'can return average item price per merchant' do
       expect(@sales_analyst.average_item_price_for_merchant(12334105)).to eq(16.66)
     end
+
+    it 'can return the average average price per merchant' do
+      exoect(sales_analyst.average_average_price_per_merchant).to eq(350.29)
+    end
   end
 end
