@@ -53,6 +53,10 @@ RSpec.describe SalesAnalyst do
       expect(@sales_analyst.average_items_per_merchant_standard_deviation).to eq(3.26)
     end
 
+    it 'can return whether invoice had any successful transactions' do
+      expect(@sales_analyst.successful_transaction?(2179)).to be true
+    end
+
     it 'can return merchants with pending invoices' do
       expect(@sales_analyst.merchants_with_pending_invoices.count).to eq(467)
     end
@@ -62,7 +66,7 @@ RSpec.describe SalesAnalyst do
     end
 
     it 'can return total revenue for a merchant' do
-      expect(@sales_analyst.revenue_by_merchant(merchant_id)).to eq(243)
+      expect(@sales_analyst.revenue_by_merchant(12334194)).to eq(243)
     end
   end
 end
