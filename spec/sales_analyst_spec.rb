@@ -84,5 +84,23 @@ RSpec.describe SalesAnalyst do
       expect(expected).to eq BigDecimal(expected)
       expect(expected.class).to eq BigDecimal
     end
+
+    it "#top_revenue_earners(x) returns the top x merchants ranked by revenue" do
+      expected = @sales_analyst.top_revenue_earners(10)
+      first = expected.first
+      last = expected.last
+
+      expect(expected.length).to eq 10
+
+      expect(first.class).to eq Merchant
+      expect(first.id).to eq 12334634
+
+      expect(last.class).to eq Merchant
+      expect(last.id).to eq 12335747
+
+      expected = @sales_analyst.top_revenue_earners
+
+      expect(expected.length).to eq 20
+    end
   end
 end
