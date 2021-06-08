@@ -35,6 +35,10 @@ class MerchantRepository
     all.delete(find_by_id(id))
   end
 
+  def total_num
+    all.uniq.count
+  end
+
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {
