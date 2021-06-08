@@ -17,11 +17,7 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant
-    total_num_items.fdiv(merchants.total_num).round(2)
-  end
-
-  def total_num_items
-    @sales_engine.items.all.uniq.count
+    items.total_num.fdiv(merchants.total_num).round(2)
   end
 
   def average(numbers)

@@ -39,14 +39,6 @@ RSpec.describe SalesAnalyst do
       expect(@sales_analyst.average_items_per_merchant).to eq(2.88)
     end
 
-    it 'can return the total number of items' do
-      expect(@sales_analyst.total_num_items). to eq(1367)
-    end
-
-    # it 'can return the total number of merchants' do
-    #   expect(@sales_analyst.total_num_merchants). to eq(475)
-    # end
-
     it 'can return the average' do
       set = [3,4,5]
       expect(@sales_analyst.average(set)).to eq(4)
