@@ -84,5 +84,9 @@ RSpec.describe InvoiceRepository do
       @i.delete(1)
       expect(@i.all.count).to eq(18)
     end
+
+    it 'can return the total number of invoices' do
+      expect(@i.total_num).to eq(19)
+    end
   end
 end
