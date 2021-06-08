@@ -1,4 +1,7 @@
+require './mathable'
+
 class SalesAnalyst
+  include Mathable
   attr_reader :merchants,
               :items,
               :customers,
@@ -20,16 +23,16 @@ class SalesAnalyst
     items.total_num.fdiv(merchants.total_num).round(2)
   end
 
-  def average(numbers)
-    numbers.sum.fdiv(numbers.count)
-  end
-
-  def std_dev(numbers)
-    numerator = numbers.reduce(0) do |sum, number|
-      sum + (number.to_f - average(numbers))**2
-    end
-    (numerator.fdiv(numbers.count - 1)**0.5).round(2)
-  end
+  # def average(numbers)
+  #   numbers.sum.fdiv(numbers.count)
+  # end
+  #
+  # def std_dev(numbers)
+  #   numerator = numbers.reduce(0) do |sum, number|
+  #     sum + (number.to_f - average(numbers))**2
+  #   end
+  #   (numerator.fdiv(numbers.count - 1)**0.5).round(2)
+  # end
 
   def average_items_per_merchant_standard_deviation
     num_items_per_merchant = merchants.all.map do |merchant|
@@ -112,31 +115,8 @@ class SalesAnalyst
     end
   end
 
-  def weekday(date)
-    date.strftime('%A')
-  end
-
-  def count_days(day)
-    @sales_engine.invoices.all.count do |invoice|
-      weekday(invoice.created_at) == day
-    end
-  end
-
   def top_days_by_invoice_count
-    mean = invoices.total_num.fdiv(7).round(2)
-    days = {}
-    @sales_engine.invoices.all.each do |invoice|
-      days[count_days(weekday(invoice.created_at))] = weekday(invoice.created_at)
-    end
-
-    nums = days.keys
-    days_std_dev = std_dev(nums)
-    one_std_dev = mean + days_std_dev
-    days_with_invoice = []
-    days.find_all do |invoice_count, day|
-      days_with_invoice << day if invoice_count > one_std_dev
-    end
-    days_with_invoice
+    invoices.top_days
   end
 
   def successful_transaction?(invoice_id)
