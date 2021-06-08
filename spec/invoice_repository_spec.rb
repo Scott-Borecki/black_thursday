@@ -22,7 +22,7 @@ RSpec.describe InvoiceRepository do
     end
   end
 
-  describe 'Object Methods' do 
+  describe 'Object Methods' do
     it 'can return Invoice by ID' do
       expect(@i.find_by_id(1).merchant_id).to eq(12335938)
       expect(@i.find_by_id(100000000000)).to eq(nil)
@@ -44,7 +44,13 @@ RSpec.describe InvoiceRepository do
     it 'can return all Invoices by status' do
       invoices = @i.find_all_by_status(:peNding)
       expect(invoices.count).to eq(9)
-      expect(@i.find_all_by_status('squirrels')).to eq ([])
+      expect(@i.find_all_by_status('squirrels')).to eq([])
+    end
+
+    it 'can return all Invoices by date' do
+      date = Time.parse('2006-10-16')
+      invoices = @i.find_all_by_date(date)
+      expect(invoices.count).to eq(1)
     end
 
     it 'can create a new Invoice with attributes' do

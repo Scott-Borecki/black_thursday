@@ -151,4 +151,40 @@ class SalesAnalyst
   def top_revenue_earners(x = 20)
     merchants.all.max_by(x) { |merchant| revenue_by_merchant(merchant.id) }
   end
+  
+  def invoice_status(status)
+    status_count = @sales_engine.invoices.find_all_by_status(status).count
+    total_count = @sales_engine.invoices.all.count
+    (status_count.to_f / total_count * 100).round(2)
+  end
+
+  def invoice_paid_in_full?(invoice_id)
+    transactions = @sales_engine.transactions.find_all_by_invoice_id(invoice_id)
+    success = transactions.find_all { |transaction| transaction.result == :success }
+    success.count >= 1
+  end
+
+  def invoice_total(invoice_id)
+    invoice_items = @sales_engine.invoice_items.find_all_by_invoice_id(invoice_id)
+    big_decimal_total = invoice_items.map do |invoice|
+      invoice.unit_price * invoice.quantity
+    end.sum
+    big_decimal_total
+  end
+
+  def total_revenue_by_date(date)
+    invoices_by_date = @sales_engine.invoices.find_all_by_date(date)
+
+    transactions_by_invoice_id = invoices_by_date.map do |invoice|
+      @sales_engine.transactions.find_all_by_invoice_id(invoice.id)
+    end
+
+    successful_transaction_invoice_ids = transactions_by_invoice_id.flatten.reduce([]) do |results, transaction|
+      results << @sales_engine.invoice_items.find_all_by_invoice_id(transaction.invoice_id) if transaction.result == :success
+    end.flatten.uniq
+
+    successful_transaction_invoice_ids.reduce(0) do |sum, invoice_item|
+      sum + invoice_item.unit_price * invoice_item.quantity
+    end
+  end
 end

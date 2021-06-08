@@ -108,5 +108,24 @@ RSpec.describe SalesAnalyst do
 
       expect(expected.length).to eq 20
     end
+
+    it 'can return the percentage of invoices based on status' do
+      expect(@sales_analyst.invoice_status(:pending)).to eq(29.55)
+      expect(@sales_analyst.invoice_status(:shipped)).to eq(56.95)
+      expect(@sales_analyst.invoice_status(:returned)).to eq(13.5)
+    end
+
+    it 'can identify if an invoice is paid in full' do
+      expect(@sales_analyst.invoice_paid_in_full?(2179)).to eq(true)
+    end
+
+    it 'can return the total dollar amount of an invoice' do
+      expect(@sales_analyst.invoice_total(2179)).to eq(0.3107511e5)
+    end
+
+    it 'can return the total revenue by date' do
+      date = Time.parse("2009-02-07")
+      expect(@sales_analyst.total_revenue_by_date(date)).to eq(0.2106777e5)
+    end
   end
 end

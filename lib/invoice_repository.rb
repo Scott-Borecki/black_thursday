@@ -26,6 +26,10 @@ class InvoiceRepository
     all.find_all { |invoice| status.downcase == invoice.status.downcase }
   end
 
+  def find_all_by_date(date)
+    all.find_all { |invoice| date === invoice.created_at }
+  end
+
   def create(attributes)
     new_invoice = all.max_by { |invoice| invoice.id }.id + 1
     attributes[:id] = new_invoice
