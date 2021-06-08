@@ -112,6 +112,10 @@ RSpec.describe ItemRepository do
       expect(@ir.all.count).to eq(5)
     end
 
+    it 'can return the total number of items' do
+      expect(@ir.total_num).to eq(6)
+    end
+
     it 'populates repository' do
       path = './spec/fixtures/items.csv'
       @ir.populate_repository(path)

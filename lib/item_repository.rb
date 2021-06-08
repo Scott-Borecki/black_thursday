@@ -51,6 +51,10 @@ class ItemRepository
     all.delete(item)
   end
 
+  def total_num
+    all.uniq.count
+  end
+
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {
