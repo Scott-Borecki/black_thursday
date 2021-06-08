@@ -1,8 +1,11 @@
 require 'CSV'
 require_relative '../lib/invoice'
 require 'time'
+require './mathable'
 
 class InvoiceRepository
+  include Mathable
+
   attr_reader :all
 
   def initialize(path)
@@ -47,6 +50,33 @@ class InvoiceRepository
 
   def total_num
     all.uniq.count
+  end
+
+  def weekday(date)
+    date.strftime('%A')
+  end
+
+  def count_days(day)
+    all.count do |invoice|
+      weekday(invoice.created_at) == day
+    end
+  end
+
+  def top_days
+    mean = total_num.fdiv(7).round(2)
+    days = {}
+    all.each do |invoice|
+      days[count_days(weekday(invoice.created_at))] = weekday(invoice.created_at)
+    end
+
+    nums = days.keys
+    days_std_dev = std_dev(nums)
+    one_std_dev = mean + days_std_dev
+    days_with_invoice = []
+    days.find_all do |invoice_count, day|
+      days_with_invoice << day if invoice_count > one_std_dev
+    end
+    days_with_invoice
   end
 
   def populate_repository(path)
