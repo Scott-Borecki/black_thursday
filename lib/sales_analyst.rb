@@ -1,10 +1,10 @@
 class SalesAnalyst
   attr_reader :merchants,
-               :items,
-               :customers,
-               :invoices,
-               :invoice_items,
-               :transactions
+              :items,
+              :customers,
+              :invoices,
+              :invoice_items,
+              :transactions
 
   def initialize(sales_engine)
     @sales_engine = sales_engine
@@ -15,30 +15,6 @@ class SalesAnalyst
     @invoice_items = sales_engine.invoice_items
     @transactions = sales_engine.transactions
   end
-
-  # def merchants
-  #   @sales_engine.merchants
-  # end
-  #
-  # def items
-  #   @sales_engine.items
-  # end
-  #
-  # def customers
-  #   @sales_engine.customers
-  # end
-  #
-  # def invoices
-  #   @sales_engine.invoices
-  # end
-  #
-  # def invoice_items
-  #   @sales_engine.invoice_items
-  # end
-  #
-  # def transactions
-  #   @sales_engine.transactions
-  # end
 
   def average_items_per_merchant
     total_num_items.fdiv(total_num_merchants).round(2)
