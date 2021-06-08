@@ -43,9 +43,9 @@ RSpec.describe SalesAnalyst do
       expect(@sales_analyst.total_num_items). to eq(1367)
     end
 
-    it 'can return the total number of merchants' do
-      expect(@sales_analyst.total_num_merchants). to eq(475)
-    end
+    # it 'can return the total number of merchants' do
+    #   expect(@sales_analyst.total_num_merchants). to eq(475)
+    # end
 
     it 'can return the average' do
       set = [3,4,5]
@@ -90,21 +90,6 @@ RSpec.describe SalesAnalyst do
       expect(@sales_analyst.merchants_with_only_one_item.count).to eq(243)
       expect(@sales_analyst.merchants_with_only_one_item.first.class)
         .to eq(Merchant)
-    end
-
-    it '#merchants_with_only_one_item_registered_in_month returns merchants
-      with only one invoice in given month' do
-      expected = @sales_analyst
-                 .merchants_with_only_one_item_registered_in_month('March')
-
-      expect(expected.length).to eq 21
-      expect(expected.first.class).to eq Merchant
-
-      expected = @sales_analyst
-                 .merchants_with_only_one_item_registered_in_month('June')
-
-      expect(expected.length).to eq 18
-      expect(expected.first.class).to eq Merchant
     end
 
     it 'can return total revenue for a merchant' do

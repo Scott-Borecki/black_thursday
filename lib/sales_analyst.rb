@@ -17,15 +17,11 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant
-    total_num_items.fdiv(total_num_merchants).round(2)
+    total_num_items.fdiv(merchants.total_num).round(2)
   end
 
   def total_num_items
     @sales_engine.items.all.uniq.count
-  end
-
-  def total_num_merchants
-    @sales_engine.merchants.all.uniq.count
   end
 
   def average(numbers)
@@ -84,7 +80,7 @@ class SalesAnalyst
   end
 
   def average_invoices_per_merchant
-    total_num_invoices.fdiv(total_num_merchants).round(2)
+    total_num_invoices.fdiv(merchants.total_num).round(2)
   end
 
   def average_invoices_per_merchant_standard_deviation
@@ -99,7 +95,7 @@ class SalesAnalyst
   end
 
   def top_merchants_by_invoice_count
-    mean = total_num_invoices.fdiv(total_num_merchants).round(2)
+    mean = total_num_invoices.fdiv(merchants.total_num).round(2)
     num_invoices = @sales_engine.merchants.all.map do |merchant|
       @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count
     end
@@ -112,7 +108,7 @@ class SalesAnalyst
   end
 
   def bottom_merchants_by_invoice_count
-    mean = total_num_invoices.fdiv(total_num_merchants).round(2)
+    mean = total_num_invoices.fdiv(merchants.total_num).round(2)
     num_invoices = @sales_engine.merchants.all.map do |merchant|
       @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count
     end
