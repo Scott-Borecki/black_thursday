@@ -88,5 +88,9 @@ RSpec.describe InvoiceRepository do
     it 'can return the total number of invoices' do
       expect(@i.total_num).to eq(19)
     end
+
+    it 'can return top days' do
+      expect(@i.top_days.first).to eq('Wednesday')
+    end
   end
 end
