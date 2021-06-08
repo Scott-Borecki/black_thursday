@@ -1,32 +1,44 @@
 class SalesAnalyst
+  attr_reader :merchants,
+               :items,
+               :customers,
+               :invoices,
+               :invoice_items,
+               :transactions
 
   def initialize(sales_engine)
     @sales_engine = sales_engine
+    @merchants = sales_engine.merchants
+    @items = sales_engine.items
+    @customers = sales_engine.customers
+    @invoices = sales_engine.invoices
+    @invoice_items = sales_engine.invoice_items
+    @transactions = sales_engine.transactions
   end
 
-  def merchants
-    @sales_engine.merchants
-  end
-
-  def items
-    @sales_engine.items
-  end
-
-  def customers
-    @sales_engine.customers
-  end
-
-  def invoices
-    @sales_engine.invoices
-  end
-
-  def invoice_items
-    @sales_engine.invoice_items
-  end
-
-  def transactions
-    @sales_engine.transactions
-  end
+  # def merchants
+  #   @sales_engine.merchants
+  # end
+  #
+  # def items
+  #   @sales_engine.items
+  # end
+  #
+  # def customers
+  #   @sales_engine.customers
+  # end
+  #
+  # def invoices
+  #   @sales_engine.invoices
+  # end
+  #
+  # def invoice_items
+  #   @sales_engine.invoice_items
+  # end
+  #
+  # def transactions
+  #   @sales_engine.transactions
+  # end
 
   def average_items_per_merchant
     total_num_items.fdiv(total_num_merchants).round(2)
@@ -88,8 +100,8 @@ class SalesAnalyst
     @sales_engine.items.all.reduce([]) do |array, item|
       array << item if item.unit_price > two_devs
       array
-    end 
-  end 
+    end
+  end
 
   def total_num_invoices
     @sales_engine.invoices.all.uniq.count
@@ -145,7 +157,7 @@ class SalesAnalyst
       weekday(invoice.created_at) == day
     end
   end
-  
+
   def top_days_by_invoice_count
     mean = total_num_invoices.fdiv(7).round(2)
     days = {}
@@ -256,7 +268,7 @@ class SalesAnalyst
   def top_revenue_earners(x = 20)
     merchants.all.max_by(x) { |merchant| revenue_by_merchant(merchant.id) }
   end
-  
+
   def invoice_status(status)
     status_count = @sales_engine.invoices.find_all_by_status(status).count
     total_count = @sales_engine.invoices.all.count
