@@ -37,7 +37,12 @@ class MerchantRepository
 
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
-      data_hash = { id: row[:id].to_i, name: row[:name] }
+      data_hash = {
+        id:         row[:id].to_i,
+        name:       row[:name],
+        created_at: Time.parse(row[:created_at]),
+        updated_at: Time.parse(row[:updated_at])
+      }
       @all << Merchant.new(data_hash)
     end
   end
