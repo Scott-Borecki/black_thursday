@@ -58,6 +58,39 @@ class SalesAnalyst
     std_dev(num_items_per_merchant)
   end
 
+  def merchants_with_high_item_count
+    @sales_engine.merchants.all.find_all do |merchant|
+      @sales_engine.items.find_all_by_merchant_id(merchant.id).count >= average_items_per_merchant_standard_deviation + average_items_per_merchant
+    end
+  end
+
+  def average_item_price_for_merchant(merchant_id)
+    item_prices = @sales_engine.items.find_all_by_merchant_id(merchant_id).map do |item|
+      item.unit_price
+    end
+    (item_prices.sum / BigDecimal(item_prices.count)).round(2)
+  end
+
+  def average_average_price_per_merchant
+    all_merchant_averages = @sales_engine.merchants.all.map do |merchant|
+    average_item_price_for_merchant(merchant.id)
+    end
+    (all_merchant_averages.sum / BigDecimal(all_merchant_averages.count)).round(2)
+  end
+
+  def golden_items
+    num_items = @sales_engine.items.all.map do |item|
+      item.unit_price
+    end
+    mean = num_items.sum.fdiv(num_items.count).round(2)
+    item_std_dev = std_dev(num_items)
+    two_devs = mean + (item_std_dev * 2)
+    @sales_engine.items.all.reduce([]) do |array, item|
+      array << item if item.unit_price > two_devs
+      array
+    end 
+  end 
+
   def total_num_invoices
     @sales_engine.invoices.all.uniq.count
   end
@@ -260,4 +293,3 @@ class SalesAnalyst
     end
   end
 end
-

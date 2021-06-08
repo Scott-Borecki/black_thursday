@@ -54,6 +54,22 @@ RSpec.describe SalesAnalyst do
         .to eq(3.26)
     end
 
+    it 'can return merchants with high item count' do
+      expect(@sales_analyst.merchants_with_high_item_count.count).to eq(52)
+    end
+
+    it 'can return average item price per merchant' do
+      expect(@sales_analyst.average_item_price_for_merchant(12334105)).to eq(16.66)
+    end
+
+    it 'can return the average average price per merchant' do
+      expect(@sales_analyst.average_average_price_per_merchant).to eq(350.29)
+    end
+
+    it 'can return "Golden Items" 2 standard deviations above average price' do
+      expect(@sales_analyst.golden_items.length).to eq(5)
+    end
+
     it 'can return whether invoice had any successful transactions' do
       expect(@sales_analyst.successful_transaction?(2179)).to be true
     end
