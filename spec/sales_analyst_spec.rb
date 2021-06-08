@@ -127,5 +127,29 @@ RSpec.describe SalesAnalyst do
       date = Time.parse("2009-02-07")
       expect(@sales_analyst.total_revenue_by_date(date)).to eq(0.2106777e5)
     end
+
+    it 'can return the total number of invoices' do
+      expect(@sales_analyst.total_num_invoices).to eq(4985)
+    end
+    
+    it 'can return average invoices per merchant' do
+      expect(@sales_analyst.average_invoices_per_merchant).to eq(10.49)
+    end 
+
+    it 'can return average invoices by merchant standard deviation' do
+      expect(@sales_analyst.average_invoices_per_merchant_standard_deviation).to eq(3.29)
+    end 
+
+    it 'can return top merchants by invoice count' do
+      expect(@sales_analyst.top_merchants_by_invoice_count.count).to eq(12)
+    end 
+
+    it 'can return bottom merchants by invoice count' do
+      expect(@sales_analyst.bottom_merchants_by_invoice_count.count).to eq(4)
+    end
+
+    it 'can return top days by invoice count' do
+      expect(@sales_analyst.top_days_by_invoice_count.first).to eq('Wednesday')
+    end 
   end
 end
