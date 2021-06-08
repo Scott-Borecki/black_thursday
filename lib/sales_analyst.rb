@@ -71,12 +71,8 @@ class SalesAnalyst
     end
   end
 
-  def total_num_invoices
-    @sales_engine.invoices.all.uniq.count
-  end
-
   def average_invoices_per_merchant
-    total_num_invoices.fdiv(merchants.total_num).round(2)
+    invoices.total_num.fdiv(merchants.total_num).round(2)
   end
 
   def average_invoices_per_merchant_standard_deviation
@@ -91,7 +87,7 @@ class SalesAnalyst
   end
 
   def top_merchants_by_invoice_count
-    mean = total_num_invoices.fdiv(merchants.total_num).round(2)
+    mean = invoices.total_num.fdiv(merchants.total_num).round(2)
     num_invoices = @sales_engine.merchants.all.map do |merchant|
       @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count
     end
@@ -104,7 +100,7 @@ class SalesAnalyst
   end
 
   def bottom_merchants_by_invoice_count
-    mean = total_num_invoices.fdiv(merchants.total_num).round(2)
+    mean = invoices.total_num.fdiv(merchants.total_num).round(2)
     num_invoices = @sales_engine.merchants.all.map do |merchant|
       @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count
     end
@@ -127,7 +123,7 @@ class SalesAnalyst
   end
 
   def top_days_by_invoice_count
-    mean = total_num_invoices.fdiv(7).round(2)
+    mean = invoices.total_num.fdiv(7).round(2)
     days = {}
     @sales_engine.invoices.all.each do |invoice|
       days[count_days(weekday(invoice.created_at))] = weekday(invoice.created_at)

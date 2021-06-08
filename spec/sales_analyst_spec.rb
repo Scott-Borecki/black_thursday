@@ -129,10 +129,6 @@ RSpec.describe SalesAnalyst do
       expect(@sales_analyst.total_revenue_by_date(date)).to eq(0.2106777e5)
     end
 
-    it 'can return the total number of invoices' do
-      expect(@sales_analyst.total_num_invoices).to eq(4985)
-    end
-
     it 'can return average invoices per merchant' do
       expect(@sales_analyst.average_invoices_per_merchant).to eq(10.49)
     end
