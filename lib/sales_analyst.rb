@@ -28,8 +28,6 @@ class SalesAnalyst
     @sales_engine.transactions
   end
 
-
-
   def average_items_per_merchant
     total_num_items.fdiv(total_num_merchants).round(2)
   end
@@ -67,10 +65,9 @@ class SalesAnalyst
   end
 
   def merchants_with_pending_invoices
-    invoices.all.reduce([]) do |array, invoice|
+    invoices.all.each_with_object([]) do |invoice, array|
       merchant = merchants.find_by_id(invoice.merchant_id)
       array << merchant unless successful_transaction?(invoice.id)
-      array
     end.uniq
   end
 
@@ -90,7 +87,7 @@ class SalesAnalyst
         invoice.created_at.month == month_integer
       end
       merchant.created_at.month == month_integer &&
-      count == 1
+        count == 1
     end
 
     # merchant.created_at.month
