@@ -50,7 +50,63 @@ RSpec.describe SalesAnalyst do
     end
 
     it 'can return average items by merchant standard deviation' do
-      expect(@sales_analyst.average_items_per_merchant_standard_deviation).to eq(3.26)
+      expect(@sales_analyst.average_items_per_merchant_standard_deviation)
+        .to eq(3.26)
+    end
+
+    it 'can return whether invoice had any successful transactions' do
+      expect(@sales_analyst.successful_transaction?(2179)).to be true
+    end
+
+    it 'can return merchants with pending invoices' do
+      expect(@sales_analyst.merchants_with_pending_invoices.count).to eq(467)
+    end
+
+    it 'can return merchants that only sell one item' do
+      expect(@sales_analyst.merchants_with_only_one_item.count).to eq(243)
+      expect(@sales_analyst.merchants_with_only_one_item.first.class)
+        .to eq(Merchant)
+    end
+
+    it '#merchants_with_only_one_item_registered_in_month returns merchants
+      with only one invoice in given month' do
+      expected = @sales_analyst
+                 .merchants_with_only_one_item_registered_in_month('March')
+
+      expect(expected.length).to eq 21
+      expect(expected.first.class).to eq Merchant
+
+      expected = @sales_analyst
+                 .merchants_with_only_one_item_registered_in_month('June')
+
+      expect(expected.length).to eq 18
+      expect(expected.first.class).to eq Merchant
+    end
+
+    it 'can return total revenue for a merchant' do
+      expected = @sales_analyst.revenue_by_merchant(12334194)
+
+      expect(expected).to eq BigDecimal(expected)
+      expect(expected.class).to eq BigDecimal
+    end
+
+    it '#top_revenue_earners(x) returns the top x merchants ranked by
+      revenue' do
+      expected = @sales_analyst.top_revenue_earners(10)
+      first = expected.first
+      last = expected.last
+
+      expect(expected.length).to eq 10
+
+      expect(first.class).to eq Merchant
+      expect(first.id).to eq 12334634
+
+      expect(last.class).to eq Merchant
+      expect(last.id).to eq 12335747
+
+      expected = @sales_analyst.top_revenue_earners
+
+      expect(expected.length).to eq 20
     end
 
     it 'can return the percentage of invoices based on status' do
