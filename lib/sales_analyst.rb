@@ -42,7 +42,7 @@ class SalesAnalyst
 
   def invoice_paid_in_full?(invoice_id)
     transactions = @sales_engine.transactions.find_all_by_invoice_id(invoice_id)
-    success = transactions.find_all {|transaction| transaction.result == :success}
+    success = transactions.find_all { |transaction| transaction.result == :success }
     success.count >= 1
   end
 
@@ -66,7 +66,7 @@ class SalesAnalyst
     end.flatten.uniq
 
     successful_transaction_invoice_ids.reduce(0) do |sum, invoice_item|
-      sum += invoice_item.unit_price * invoice_item.quantity
+      sum + invoice_item.unit_price * invoice_item.quantity
     end
   end
 end
