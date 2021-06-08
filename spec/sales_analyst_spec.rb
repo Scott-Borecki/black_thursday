@@ -68,7 +68,7 @@ RSpec.describe SalesAnalyst do
         .to eq(Merchant)
     end
 
-    xit '#merchants_with_only_one_item_registered_in_month returns merchants
+    it '#merchants_with_only_one_item_registered_in_month returns merchants
       with only one invoice in given month' do
       expected = @sales_analyst
                  .merchants_with_only_one_item_registered_in_month('March')
