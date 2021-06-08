@@ -74,7 +74,7 @@ RSpec.describe SalesAnalyst do
     end
 
     it 'can return top days by invoice count' do
-      expect(@sales_analyst.top_days_by_invoice_count.first).to eq("Wednesday")
+      expect(@sales_analyst.top_days_by_invoice_count.first).to eq('Wednesday')
     end 
   end
 end

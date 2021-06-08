@@ -61,9 +61,8 @@ class SalesAnalyst
 
     inv_std_dev = std_dev(num_invoices)
     two_devs = mean + (inv_std_dev * 2)
-    @sales_engine.merchants.all.reduce([]) do |array, merchant|
+    @sales_engine.merchants.all.each_with_object([]) do |merchant, array|
       array << merchant if @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count > two_devs
-      array
     end
   end
 
@@ -75,19 +74,18 @@ class SalesAnalyst
 
     inv_std_dev = std_dev(num_invoices)
     two_devs = mean - (inv_std_dev * 2)
-    @sales_engine.merchants.all.reduce([]) do |array, merchant|
+    @sales_engine.merchants.all.each_with_object([]) do |merchant, array|
       array << merchant if @sales_engine.invoices.find_all_by_merchant_id(merchant.id).count < two_devs
-      array
     end
   end
 
   def weekday(date)
-    date.strftime("%A")
+    date.strftime('%A')
   end
 
   def count_days(day)
     @sales_engine.invoices.all.count do |invoice|
-     weekday(invoice.created_at) == day
+      weekday(invoice.created_at) == day
     end
   end
   
@@ -103,9 +101,7 @@ class SalesAnalyst
     one_std_dev = mean + days_std_dev
     days_with_invoice = []
     days.find_all do |invoice_count, day|
-      if invoice_count > one_std_dev
-        days_with_invoice << day
-      end
+      days_with_invoice << day if invoice_count > one_std_dev
     end
     days_with_invoice
   end
