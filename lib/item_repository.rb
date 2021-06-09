@@ -11,6 +11,7 @@ class ItemRepository
   def initialize(path)
     @all = []
     populate_repository(path)
+    @by_merchant = items_by_merchant_id
   end
 
   def find_by_id(id)
@@ -33,17 +34,13 @@ class ItemRepository
     all.find_all { |item| range.include?(item.unit_price) }
   end
 
-  def find_all_by_merchant_id(merchant_id)
-    all.find_all { |item| merchant_id == item.merchant_id }
+  def items_by_merchant_id
+    all.group_by { |item| item.merchant_id }
   end
 
-  # def find_all_by_merchant_id(merchant_id)
-  #   merchant_ids[merchant_id]
-  # end
-  #
-  # def merchant_ids
-  #   all.group_by { |item| item.merchant_id }
-  # end
+  def find_all_by_merchant_id(merchant_id)
+    @by_merchant[merchant_id] || []
+  end
 
   def create(attributes)
     new_id = all.max_by { |item| item.id }.id + 1
