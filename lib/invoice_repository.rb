@@ -1,7 +1,7 @@
 require 'CSV'
 require_relative '../lib/invoice'
 require 'time'
-require './mathable'
+require_relative 'mathable'
 
 class InvoiceRepository
   include Mathable
