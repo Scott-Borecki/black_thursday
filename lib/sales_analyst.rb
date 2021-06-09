@@ -129,10 +129,7 @@ class SalesAnalyst
 
   def invoice_total(invoice_id)
     inv_items = invoice_items.find_all_by_invoice_id(invoice_id)
-    big_decimal_total = inv_items.map do |invoice|
-      invoice.unit_price * invoice.quantity
-    end.sum
-    big_decimal_total
+    inv_items.sum { |invoice| invoice.unit_price * invoice.quantity }
   end
 
   def total_revenue_by_date(date)
