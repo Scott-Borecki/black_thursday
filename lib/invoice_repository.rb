@@ -79,6 +79,11 @@ class InvoiceRepository
     days_with_invoice
   end
 
+  def invoice_status(status)
+    status_count = find_all_by_status(status).count
+    (status_count.to_f / total_num * 100).round(2)
+  end
+
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {
