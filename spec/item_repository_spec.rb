@@ -113,11 +113,11 @@ RSpec.describe ItemRepository do
     end
 
     it 'can return sum of item prices by merchant id' do
-      expect(@ir.average_item_price_for_merchant(12334185)).to eq(0.1117e2)
+      expect(@ir.sum_item_prices(12334185)).to eq(0.335e2)
     end
 
-    xit 'can return the average item price for a merchant' do
-      # make test
+    it 'can return the average item price for a merchant' do
+      expect(@ir.average_item_price_for_merchant(12334185)).to eq(0.1117e2)
     end
 
     it 'can return the total number of items' do
