@@ -9,14 +9,19 @@ class TransactionRepository
   def initialize(path)
     @all = []
     populate_repository(path)
+    @by_invoice = transactions_by_invoice_id
   end
 
   def find_by_id(id)
     all.find { |transaction| id == transaction.id }
   end
 
+  def transactions_by_invoice_id
+    all.group_by { |transaction| transaction.invoice_id }
+  end
+
   def find_all_by_invoice_id(invoice_id)
-    all.find_all { |transaction| invoice_id == transaction.invoice_id }
+    @by_invoice[invoice_id] || []
   end
 
   def find_all_by_credit_card_number(credit_card_number)
