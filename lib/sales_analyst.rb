@@ -48,16 +48,7 @@ class SalesAnalyst
   end
 
   def golden_items
-    num_items = items.all.map do |item|
-      item.unit_price
-    end
-    mean = num_items.sum.fdiv(num_items.count).round(2)
-    item_std_dev = std_dev(num_items)
-    two_devs = mean + (item_std_dev * 2)
-    items.all.reduce([]) do |array, item|
-      array << item if item.unit_price > two_devs
-      array
-    end
+    items.golden_items
   end
 
   def average_invoices_per_merchant
@@ -163,3 +154,4 @@ class SalesAnalyst
     invoices.invoice_status(status)
   end
 end
+
