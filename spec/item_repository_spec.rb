@@ -123,5 +123,9 @@ RSpec.describe ItemRepository do
 
       expect(@ir.all.count).to eq(12)
     end
+
+    it 'can return "Golden Items" 2 standard deviations above average price' do
+      expect(@ir.golden_items.length).to eq(1)
+    end
   end
 end
