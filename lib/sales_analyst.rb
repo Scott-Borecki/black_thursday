@@ -108,12 +108,6 @@ class SalesAnalyst
     invoices.top_days
   end
 
-  def successful_transaction?(invoice_id)
-    transactions.find_all_by_invoice_id(invoice_id).any? do |transaction|
-      transaction.result == :success
-    end
-  end
-
   def merchants_with_pending_invoices
     invoices.all.each_with_object([]) do |invoice, array|
       merchant = merchants.find_by_id(invoice.merchant_id)
@@ -129,13 +123,8 @@ class SalesAnalyst
 
   def revenue_by_merchant(merchant_id)
     invoices.find_all_by_merchant_id(merchant_id).sum do |invoice|
-      if successful_transaction?(invoice.id) == false
-        0
-      else
-        invoice_items.find_all_by_invoice_id(invoice.id).sum do |invoice_item|
-          invoice_item.unit_price * invoice_item.quantity
-        end
-      end
+      transactions.successful_transaction?(invoice.id) ?
+        invoice_items.sum_invoice_items(invoice.id) : 0
     end
   end
 

@@ -38,6 +38,12 @@ class InvoiceItemRepository
     all.delete(invoice_item)
   end
 
+  def sum_invoice_items(invoice_id)
+    find_all_by_invoice_id(invoice_id).sum do |invoice_item|
+      invoice_item.unit_price * invoice_item.quantity
+    end
+  end
+
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {

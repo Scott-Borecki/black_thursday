@@ -42,6 +42,12 @@ class TransactionRepository
     all.delete(transaction)
   end
 
+  def successful_transaction?(invoice_id)
+    find_all_by_invoice_id(invoice_id).any? do |transaction|
+      transaction.result == :success
+    end
+  end
+
   def populate_repository(path)
     CSV.foreach(path, headers: true, header_converters: :symbol) do |row|
       data_hash = {
