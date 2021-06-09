@@ -11,6 +11,7 @@ class InvoiceRepository
   def initialize(path)
     @all = []
     populate_repository(path)
+    @by_merchant = invoices_by_merchant_id
   end
 
   def find_by_id(id)
@@ -21,8 +22,12 @@ class InvoiceRepository
     all.find_all { |invoice| customer_id == invoice.customer_id }
   end
 
+  def invoices_by_merchant_id
+    all.group_by { |invoice| invoice.merchant_id }
+  end
+
   def find_all_by_merchant_id(merchant_id)
-    all.find_all { |invoice| merchant_id == invoice.merchant_id }
+    @by_merchant[merchant_id] || []
   end
 
   def find_all_by_status(status)
@@ -52,31 +57,18 @@ class InvoiceRepository
     all.uniq.count
   end
 
-  def weekday(date)
-    date.strftime('%A')
+  def invoices_by_day
+    all.group_by { |invoice| invoice.created_at.strftime('%A') }
   end
 
-  def count_days(day)
-    all.count do |invoice|
-      weekday(invoice.created_at) == day
-    end
+  def num_invoices_by_day
+    invoices_by_day.transform_values { |values| values.length }
   end
 
   def top_days
-    mean = total_num.fdiv(7).round(2)
-    days = {}
-    all.each do |invoice|
-      days[count_days(weekday(invoice.created_at))] = weekday(invoice.created_at)
+    num_invoices_by_day.each_with_object([]) do |(day, num_invoices), array|
+      array << day if num_invoices > std_dev_from_avg(num_invoices_by_day.values, 1)
     end
-
-    nums = days.keys
-    days_std_dev = std_dev(nums)
-    one_std_dev = mean + days_std_dev
-    days_with_invoice = []
-    days.find_all do |invoice_count, day|
-      days_with_invoice << day if invoice_count > one_std_dev
-    end
-    days_with_invoice
   end
 
   def invoice_status(status)

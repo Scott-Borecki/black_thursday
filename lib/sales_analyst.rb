@@ -10,13 +10,13 @@ class SalesAnalyst
               :transactions
 
   def initialize(sales_engine)
-    @sales_engine = sales_engine
-    @merchants = sales_engine.merchants
-    @items = sales_engine.items
-    @customers = sales_engine.customers
-    @invoices = sales_engine.invoices
+    @sales_engine  = sales_engine
+    @merchants     = sales_engine.merchants
+    @items         = sales_engine.items
+    @customers     = sales_engine.customers
+    @invoices      = sales_engine.invoices
     @invoice_items = sales_engine.invoice_items
-    @transactions = sales_engine.transactions
+    @transactions  = sales_engine.transactions
   end
 
   def average_items_per_merchant
@@ -24,12 +24,20 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant_standard_deviation
-    std_dev(merchants.all.map { |merchant| items.find_all_by_merchant_id(merchant.id).length })
+    std_dev(merchants.all.map do |merchant|
+      items.find_all_by_merchant_id(merchant.id).length
+    end)
+  end
+
+  def num_of_items_by_merchant(id)
+    items.find_all_by_merchant_id(id).length
   end
 
   def merchants_with_high_item_count
+    one_dev_above = average_items_per_merchant_standard_deviation +
+                    average_items_per_merchant
     merchants.all.find_all do |merchant|
-      items.find_all_by_merchant_id(merchant.id).length >= average_items_per_merchant_standard_deviation + average_items_per_merchant
+      num_of_items_by_merchant(merchant.id) >= one_dev_above
     end
   end
 
@@ -41,8 +49,8 @@ class SalesAnalyst
     all_merchant_averages = merchants.all.map do |merchant|
     average_item_price_for_merchant(merchant.id)
     end
-    (all_merchant_averages.sum / BigDecimal(all_merchant_averages.length)).round(2)
-    # average price of items divided by total number of merchants
+    (all_merchant_averages.sum /
+      BigDecimal(all_merchant_averages.length)).round(2)
   end
 
   def golden_items
@@ -54,7 +62,9 @@ class SalesAnalyst
   end
 
   def average_invoices_per_merchant_standard_deviation
-    std_dev(merchants.all.map { |merchant| invoices.find_all_by_merchant_id(merchant.id).length })
+    std_dev(merchants.all.map do |merchant|
+      num_of_invoices_by_merchant(merchant.id)
+    end)
   end
 
   def num_of_invoices_by_merchant(id)
@@ -62,16 +72,18 @@ class SalesAnalyst
   end
 
   def top_merchants_by_invoice_count
-    two_devs = average_invoices_per_merchant + (average_invoices_per_merchant_standard_deviation * 2)
-    merchants.all.each_with_object([]) do |merchant, array|
-      array << merchant if invoices.find_all_by_merchant_id(merchant.id).length > two_devs
+    two_devs_above = average_invoices_per_merchant +
+                     (average_invoices_per_merchant_standard_deviation * 2)
+    merchants.all.find_all do |merchant|
+      num_of_invoices_by_merchant(merchant.id) > two_devs_above
     end
   end
 
   def bottom_merchants_by_invoice_count
-    two_devs = average_invoices_per_merchant - (average_invoices_per_merchant_standard_deviation * 2)
-    merchants.all.each_with_object([]) do |merchant, array|
-      array << merchant if invoices.find_all_by_merchant_id(merchant.id).length < two_devs
+    two_devs_below = average_invoices_per_merchant -
+                     (average_invoices_per_merchant_standard_deviation * 2)
+    merchants.all.find_all do |merchant|
+      num_of_invoices_by_merchant(merchant.id) < two_devs_below
     end
   end
 
@@ -89,6 +101,12 @@ class SalesAnalyst
   def merchants_with_only_one_item
     merchants.all.find_all do |merchant|
       items.find_all_by_merchant_id(merchant.id).length == 1
+    end
+  end
+
+  def merchants_with_only_one_item_registered_in_month(month)
+    merchants_with_only_one_item.find_all do |merchant|
+      merchant.created_at.strftime('%B') == month
     end
   end
 
@@ -113,17 +131,18 @@ class SalesAnalyst
   end
 
   def total_revenue_by_date(date)
-    invoices_by_date = invoices.find_all_by_date(date)
-
-    transactions_by_invoice_id = invoices_by_date.map do |invoice|
+    trans_by_invoice_id = invoices.find_all_by_date(date).map do |invoice|
       transactions.find_all_by_invoice_id(invoice.id)
     end
 
-    successful_transaction_invoice_ids = transactions_by_invoice_id.flatten.reduce([]) do |results, transaction|
-      results << invoice_items.find_all_by_invoice_id(transaction.invoice_id) if transaction.result == :success
-    end.flatten.uniq
+    successful_trans_invoice_ids =
+      trans_by_invoice_id.flatten.reduce([]) do |results, transaction|
+        if transaction.result == :success
+          results << invoice_items.find_all_by_invoice_id(transaction.invoice_id)
+        end
+      end.flatten.uniq
 
-    successful_transaction_invoice_ids.reduce(0) do |sum, invoice_item|
+    successful_trans_invoice_ids.reduce(0) do |sum, invoice_item|
       sum + invoice_item.unit_price * invoice_item.quantity
     end
   end

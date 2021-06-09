@@ -24,12 +24,18 @@ RSpec.describe SalesAnalyst do
     end
 
     it 'has readable attributes' do
-      expect(@sales_analyst.merchants).to be_an_instance_of(MerchantRepository)
-      expect(@sales_analyst.items).to be_an_instance_of(ItemRepository)
-      expect(@sales_analyst.customers).to be_an_instance_of(CustomerRepository)
-      expect(@sales_analyst.invoices).to be_an_instance_of(InvoiceRepository)
-      expect(@sales_analyst.invoice_items).to be_an_instance_of(InvoiceItemRepository)
-      expect(@sales_analyst.transactions).to be_an_instance_of(TransactionRepository)
+      expect(@sales_analyst.merchants)
+        .to be_an_instance_of(MerchantRepository)
+      expect(@sales_analyst.items)
+        .to be_an_instance_of(ItemRepository)
+      expect(@sales_analyst.customers)
+        .to be_an_instance_of(CustomerRepository)
+      expect(@sales_analyst.invoices)
+        .to be_an_instance_of(InvoiceRepository)
+      expect(@sales_analyst.invoice_items)
+        .to be_an_instance_of(InvoiceItemRepository)
+      expect(@sales_analyst.transactions)
+        .to be_an_instance_of(TransactionRepository)
     end
   end
 
@@ -59,7 +65,8 @@ RSpec.describe SalesAnalyst do
     end
 
     it 'can return average item price per merchant' do
-      expect(@sales_analyst.average_item_price_for_merchant(12334105)).to eq(16.66)
+      expect(@sales_analyst.average_item_price_for_merchant(12334105))
+        .to eq(16.66)
     end
 
     it 'can return the average average price per merchant' do
@@ -124,7 +131,8 @@ RSpec.describe SalesAnalyst do
     end
 
     it 'can return average invoices by merchant standard deviation' do
-      expect(@sales_analyst.average_invoices_per_merchant_standard_deviation).to eq(3.29)
+      expect(@sales_analyst.average_invoices_per_merchant_standard_deviation)
+        .to eq(3.29)
     end
 
     it 'can return top merchants by invoice count' do
@@ -137,6 +145,21 @@ RSpec.describe SalesAnalyst do
 
     it 'can return top days by invoice count' do
       expect(@sales_analyst.top_days_by_invoice_count.first).to eq('Wednesday')
+    end
+
+    it "#merchants_with_only_one_item_registered_in_month returns merchants
+      with only one invoice in given month" do
+      expected = @sales_analyst
+                 .merchants_with_only_one_item_registered_in_month('March')
+
+      expect(expected.length).to eq 21
+      expect(expected.first.class).to eq Merchant
+
+      expected = @sales_analyst
+                 .merchants_with_only_one_item_registered_in_month('June')
+
+      expect(expected.length).to eq 18
+      expect(expected.first.class).to eq Merchant
     end
   end
 end
