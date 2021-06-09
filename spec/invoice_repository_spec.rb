@@ -90,7 +90,13 @@ RSpec.describe InvoiceRepository do
     end
 
     it 'can return top days' do
-      expect(@i.top_days.first).to eq('Wednesday')
+      expect(@i.top_days.first).to eq('Friday')
+    end
+
+    it 'can return the percentage of invoices based on status' do
+      expect(@i.invoice_status(:pending)).to eq(47.37)
+      expect(@i.invoice_status(:shipped)).to eq(52.63)
+      expect(@i.invoice_status(:returned)).to eq(0.0)
     end
   end
 end
