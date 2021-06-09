@@ -1,4 +1,4 @@
-require './mathable'
+require_relative 'mathable'
 
 class SalesAnalyst
   include Mathable
@@ -171,5 +171,9 @@ class SalesAnalyst
     successful_transaction_invoice_ids.reduce(0) do |sum, invoice_item|
       sum + invoice_item.unit_price * invoice_item.quantity
     end
+  end
+
+  def invoice_status(status)
+    invoices.invoice_status(status)
   end
 end
