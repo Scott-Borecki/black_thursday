@@ -54,10 +54,7 @@ class SalesAnalyst
   end
 
   def average_invoices_per_merchant_standard_deviation
-    num_invoices_per_merchant = merchants.all.map do |merchant|
-      invoices.find_all_by_merchant_id(merchant.id).length
-    end
-    std_dev(num_invoices_per_merchant)
+    std_dev(merchants.all.map { |merchant| invoices.find_all_by_merchant_id(merchant.id).length })
   end
 
   def num_of_invoices_by_merchant(id)
@@ -65,13 +62,7 @@ class SalesAnalyst
   end
 
   def top_merchants_by_invoice_count
-    mean = invoices.total_num.fdiv(merchants.total_num).round(2)
-    num_invoices = merchants.all.map do |merchant|
-      invoices.find_all_by_merchant_id(merchant.id).length
-    end
-
-    inv_std_dev = std_dev(num_invoices)
-    two_devs = mean + (inv_std_dev * 2)
+    two_devs = average_invoices_per_merchant + (average_invoices_per_merchant_standard_deviation * 2)
     merchants.all.each_with_object([]) do |merchant, array|
       array << merchant if invoices.find_all_by_merchant_id(merchant.id).length > two_devs
     end
