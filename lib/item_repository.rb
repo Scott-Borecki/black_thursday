@@ -9,7 +9,7 @@ class ItemRepository
   attr_reader :all
 
   def initialize(path)
-    @all         = []
+    @all = []
     populate_repository(path)
     @by_merchant = items_by_merchant_id
   end

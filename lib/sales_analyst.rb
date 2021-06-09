@@ -131,13 +131,15 @@ class SalesAnalyst
   end
 
   def total_revenue_by_date(date)
-    transactions_by_invoice_id = invoices.find_all_by_date(date).map do |invoice|
+    trans_by_invoice_id = invoices.find_all_by_date(date).map do |invoice|
       transactions.find_all_by_invoice_id(invoice.id)
     end
 
     successful_transaction_invoice_ids =
-      transactions_by_invoice_id.flatten.reduce([]) do |results, transaction|
-        results << invoice_items.find_all_by_invoice_id(transaction.invoice_id) if transaction.result == :success
+      trans_by_invoice_id.flatten.reduce([]) do |results, transaction|
+        results << invoice_items
+          .find_all_by_invoice_id(transaction.invoice_id) if transaction
+            .result == :success
       end.flatten.uniq
 
     successful_transaction_invoice_ids.reduce(0) do |sum, invoice_item|

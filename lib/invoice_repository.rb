@@ -9,7 +9,7 @@ class InvoiceRepository
   attr_reader :all
 
   def initialize(path)
-    @all         = []
+    @all = []
     populate_repository(path)
     @by_merchant = invoices_by_merchant_id
   end

@@ -7,7 +7,7 @@ class InvoiceItemRepository
   attr_reader :all
 
   def initialize(path)
-    @all        = []
+    @all = []
     populate_repository(path)
     @by_invoice = invoice_items_by_invoice_id
   end
