@@ -27,11 +27,15 @@ class SalesAnalyst
     std_dev(merchants.all.map { |merchant| items.find_all_by_merchant_id(merchant.id).length })
   end
 
+  def num_of_items_by_merchant(id)
+    items.find_all_by_merchant_id(id).length
+  end
+
   def merchants_with_high_item_count
+    one_dev_above = average_items_per_merchant_standard_deviation +
+      average_items_per_merchant
     merchants.all.find_all do |merchant|
-      items.find_all_by_merchant_id(merchant.id).length >=
-        average_items_per_merchant_standard_deviation +
-          average_items_per_merchant
+      num_of_items_by_merchant(merchant.id) >= one_dev_above
     end
   end
 
@@ -56,7 +60,7 @@ class SalesAnalyst
   end
 
   def average_invoices_per_merchant_standard_deviation
-    std_dev(merchants.all.map { |merchant| invoices.find_all_by_merchant_id(merchant.id).length })
+    std_dev(merchants.all.map { |merchant| num_of_invoices_by_merchant(merchant.id) })
   end
 
   def num_of_invoices_by_merchant(id)
@@ -64,18 +68,18 @@ class SalesAnalyst
   end
 
   def top_merchants_by_invoice_count
-    two_devs = average_invoices_per_merchant +
+    two_devs_above = average_invoices_per_merchant +
       (average_invoices_per_merchant_standard_deviation * 2)
     merchants.all.find_all do |merchant|
-      invoices.find_all_by_merchant_id(merchant.id).length > two_devs
+      num_of_invoices_by_merchant(merchant.id) > two_devs_above
     end
   end
 
   def bottom_merchants_by_invoice_count
-    two_devs = average_invoices_per_merchant -
+    two_devs_below = average_invoices_per_merchant -
       (average_invoices_per_merchant_standard_deviation * 2)
     merchants.all.find_all do |merchant|
-      invoices.find_all_by_merchant_id(merchant.id).length < two_devs
+      num_of_invoices_by_merchant(merchant.id) < two_devs_below
     end
   end
 
