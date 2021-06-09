@@ -71,7 +71,7 @@ RSpec.describe SalesAnalyst do
     end
 
     it 'can return whether invoice had any successful transactions' do
-      expect(@sales_analyst.successful_transaction?(2179)).to be true
+      expect(@sales_analyst.transactions.successful_transaction?(2179)).to be true
     end
 
     it 'can return merchants with pending invoices' do
