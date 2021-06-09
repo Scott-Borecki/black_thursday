@@ -24,15 +24,12 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant_standard_deviation
-    num_items_per_merchant = merchants.all.map do |merchant|
-      items.find_all_by_merchant_id(merchant.id).count
-    end
-    std_dev(num_items_per_merchant)
+    std_dev(merchants.all.map { |merchant| items.find_all_by_merchant_id(merchant.id).length })
   end
 
   def merchants_with_high_item_count
     merchants.all.find_all do |merchant|
-      items.find_all_by_merchant_id(merchant.id).count >= average_items_per_merchant_standard_deviation + average_items_per_merchant
+      items.find_all_by_merchant_id(merchant.id).length >= average_items_per_merchant_standard_deviation + average_items_per_merchant
     end
   end
 
@@ -44,7 +41,7 @@ class SalesAnalyst
     all_merchant_averages = merchants.all.map do |merchant|
     average_item_price_for_merchant(merchant.id)
     end
-    (all_merchant_averages.sum / BigDecimal(all_merchant_averages.count)).round(2)
+    (all_merchant_averages.sum / BigDecimal(all_merchant_averages.length)).round(2)
     # average price of items divided by total number of merchants
   end
 
@@ -58,38 +55,38 @@ class SalesAnalyst
 
   def average_invoices_per_merchant_standard_deviation
     num_invoices_per_merchant = merchants.all.map do |merchant|
-      invoices.find_all_by_merchant_id(merchant.id).count
+      invoices.find_all_by_merchant_id(merchant.id).length
     end
     std_dev(num_invoices_per_merchant)
   end
 
   def num_of_invoices_by_merchant(id)
-    invoices.find_all_by_merchant_id(id).count
+    invoices.find_all_by_merchant_id(id).length
   end
 
   def top_merchants_by_invoice_count
     mean = invoices.total_num.fdiv(merchants.total_num).round(2)
     num_invoices = merchants.all.map do |merchant|
-      invoices.find_all_by_merchant_id(merchant.id).count
+      invoices.find_all_by_merchant_id(merchant.id).length
     end
 
     inv_std_dev = std_dev(num_invoices)
     two_devs = mean + (inv_std_dev * 2)
     merchants.all.each_with_object([]) do |merchant, array|
-      array << merchant if invoices.find_all_by_merchant_id(merchant.id).count > two_devs
+      array << merchant if invoices.find_all_by_merchant_id(merchant.id).length > two_devs
     end
   end
 
   def bottom_merchants_by_invoice_count
     mean = invoices.total_num.fdiv(merchants.total_num).round(2)
     num_invoices = merchants.all.map do |merchant|
-      invoices.find_all_by_merchant_id(merchant.id).count
+      invoices.find_all_by_merchant_id(merchant.id).length
     end
 
     inv_std_dev = std_dev(num_invoices)
     two_devs = mean - (inv_std_dev * 2)
     merchants.all.each_with_object([]) do |merchant, array|
-      array << merchant if invoices.find_all_by_merchant_id(merchant.id).count < two_devs
+      array << merchant if invoices.find_all_by_merchant_id(merchant.id).length < two_devs
     end
   end
 
@@ -106,7 +103,7 @@ class SalesAnalyst
 
   def merchants_with_only_one_item
     merchants.all.find_all do |merchant|
-      items.find_all_by_merchant_id(merchant.id).count == 1
+      items.find_all_by_merchant_id(merchant.id).length == 1
     end
   end
 
@@ -150,4 +147,3 @@ class SalesAnalyst
     invoices.invoice_status(status)
   end
 end
-
