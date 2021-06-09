@@ -37,6 +37,14 @@ class ItemRepository
     all.find_all { |item| merchant_id == item.merchant_id }
   end
 
+  # def find_all_by_merchant_id(merchant_id)
+  #   merchant_ids[merchant_id]
+  # end
+  #
+  # def merchant_ids
+  #   all.group_by { |item| item.merchant_id }
+  # end
+
   def create(attributes)
     new_id = all.max_by { |item| item.id }.id + 1
     attributes[:id] = new_id
