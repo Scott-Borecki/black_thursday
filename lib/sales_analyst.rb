@@ -135,14 +135,14 @@ class SalesAnalyst
       transactions.find_all_by_invoice_id(invoice.id)
     end
 
-    successful_transaction_invoice_ids =
+    successful_trans_invoice_ids =
       trans_by_invoice_id.flatten.reduce([]) do |results, transaction|
-        results << invoice_items
-          .find_all_by_invoice_id(transaction.invoice_id) if transaction
-            .result == :success
+        if transaction.result == :success
+          results << invoice_items.find_all_by_invoice_id(transaction.invoice_id)
+        end
       end.flatten.uniq
 
-    successful_transaction_invoice_ids.reduce(0) do |sum, invoice_item|
+    successful_trans_invoice_ids.reduce(0) do |sum, invoice_item|
       sum + invoice_item.unit_price * invoice_item.quantity
     end
   end
