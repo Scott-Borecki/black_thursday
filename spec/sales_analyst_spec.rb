@@ -55,7 +55,7 @@ RSpec.describe SalesAnalyst do
     end
 
     it 'can return merchants with high item count' do
-      expect(@sales_analyst.merchants_with_high_item_count.count).to eq(52)
+      expect(@sales_analyst.merchants_with_high_item_count.length).to eq(52)
     end
 
     it 'can return average item price per merchant' do
@@ -71,11 +71,11 @@ RSpec.describe SalesAnalyst do
     end
 
     it 'can return merchants with pending invoices' do
-      expect(@sales_analyst.merchants_with_pending_invoices.count).to eq(467)
+      expect(@sales_analyst.merchants_with_pending_invoices.length).to eq(467)
     end
 
     it 'can return merchants that only sell one item' do
-      expect(@sales_analyst.merchants_with_only_one_item.count).to eq(243)
+      expect(@sales_analyst.merchants_with_only_one_item.length).to eq(243)
       expect(@sales_analyst.merchants_with_only_one_item.first.class)
         .to eq(Merchant)
     end
@@ -128,11 +128,11 @@ RSpec.describe SalesAnalyst do
     end
 
     it 'can return top merchants by invoice count' do
-      expect(@sales_analyst.top_merchants_by_invoice_count.count).to eq(12)
+      expect(@sales_analyst.top_merchants_by_invoice_count.length).to eq(12)
     end
 
     it 'can return bottom merchants by invoice count' do
-      expect(@sales_analyst.bottom_merchants_by_invoice_count.count).to eq(4)
+      expect(@sales_analyst.bottom_merchants_by_invoice_count.length).to eq(4)
     end
 
     it 'can return top days by invoice count' do
