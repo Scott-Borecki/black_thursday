@@ -42,10 +42,8 @@ class TransactionRepository
     all.delete(transaction)
   end
 
-  def successful_transaction?(invoice_id)
-    find_all_by_invoice_id(invoice_id).any? do |transaction|
-      transaction.result == :success
-    end
+  def invoice_paid_in_full?(invoice_id)
+    find_all_by_invoice_id(invoice_id).any? { |transaction| transaction.result == :success }
   end
 
   def populate_repository(path)

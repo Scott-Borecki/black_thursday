@@ -100,7 +100,7 @@ class SalesAnalyst
   def merchants_with_pending_invoices
     invoices.all.each_with_object([]) do |invoice, array|
       merchant = merchants.find_by_id(invoice.merchant_id)
-      array << merchant unless transactions.successful_transaction?(invoice.id)
+      array << merchant unless transactions.invoice_paid_in_full?(invoice.id)
     end.uniq
   end
 
@@ -112,7 +112,7 @@ class SalesAnalyst
 
   def revenue_by_merchant(merchant_id)
     invoices.find_all_by_merchant_id(merchant_id).sum do |invoice|
-      transactions.successful_transaction?(invoice.id) ?
+      transactions.invoice_paid_in_full?(invoice.id) ?
         invoice_items.sum_invoice_items(invoice.id) : 0
     end
   end
@@ -122,9 +122,7 @@ class SalesAnalyst
   end
 
   def invoice_paid_in_full?(invoice_id)
-    transact = transactions.find_all_by_invoice_id(invoice_id)
-    success = transact.find_all { |transaction| transaction.result == :success }
-    success.count >= 1
+    transactions.invoice_paid_in_full?(invoice_id)
   end
 
   def invoice_total(invoice_id)

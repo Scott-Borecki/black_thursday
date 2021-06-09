@@ -89,8 +89,8 @@ RSpec.describe TransactionRepository do
       expect(@tr.all.count).to eq(6)
     end
 
-    it 'can return whether the invoice has all succesful transactions' do
-      expect(@tr.successful_transaction?(2179)).to be true
+    it 'can identify if an invoice is paid in full' do
+      expect(@tr.invoice_paid_in_full?(2179)).to eq(true)
     end
   end
 end
