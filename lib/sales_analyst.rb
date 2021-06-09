@@ -100,6 +100,12 @@ class SalesAnalyst
     end
   end
 
+  def merchants_with_only_one_item_registered_in_month(month)
+    merchants_with_only_one_item.find_all do |merchant|
+      merchant.created_at.strftime('%B') == month
+    end
+  end
+
   def revenue_by_merchant(merchant_id)
     invoices.find_all_by_merchant_id(merchant_id).sum do |invoice|
       transactions.invoice_paid_in_full?(invoice.id) ?
@@ -121,9 +127,7 @@ class SalesAnalyst
   end
 
   def total_revenue_by_date(date)
-    invoices_by_date = invoices.find_all_by_date(date)
-
-    transactions_by_invoice_id = invoices_by_date.map do |invoice|
+    transactions_by_invoice_id = invoices.find_all_by_date(date).map do |invoice|
       transactions.find_all_by_invoice_id(invoice.id)
     end
 

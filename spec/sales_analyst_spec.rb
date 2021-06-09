@@ -138,5 +138,17 @@ RSpec.describe SalesAnalyst do
     it 'can return top days by invoice count' do
       expect(@sales_analyst.top_days_by_invoice_count.first).to eq('Wednesday')
     end
+
+    it "#merchants_with_only_one_item_registered_in_month returns merchants with only one invoice in given month" do
+      expected = @sales_analyst.merchants_with_only_one_item_registered_in_month("March")
+
+      expect(expected.length).to eq 21
+      expect(expected.first.class).to eq Merchant
+
+      expected = @sales_analyst.merchants_with_only_one_item_registered_in_month("June")
+
+      expect(expected.length).to eq 18
+      expect(expected.first.class).to eq Merchant
+    end
   end
 end
