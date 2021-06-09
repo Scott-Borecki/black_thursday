@@ -24,7 +24,9 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant_standard_deviation
-    std_dev(merchants.all.map { |merchant| items.find_all_by_merchant_id(merchant.id).length })
+    std_dev(merchants.all.map do |merchant|
+      items.find_all_by_merchant_id(merchant.id).length
+    end)
   end
 
   def num_of_items_by_merchant(id)
@@ -33,7 +35,7 @@ class SalesAnalyst
 
   def merchants_with_high_item_count
     one_dev_above = average_items_per_merchant_standard_deviation +
-      average_items_per_merchant
+                    average_items_per_merchant
     merchants.all.find_all do |merchant|
       num_of_items_by_merchant(merchant.id) >= one_dev_above
     end
@@ -47,8 +49,8 @@ class SalesAnalyst
     all_merchant_averages = merchants.all.map do |merchant|
     average_item_price_for_merchant(merchant.id)
     end
-    (all_merchant_averages.sum / BigDecimal(all_merchant_averages.length)).round(2)
-    # average price of items divided by total number of merchants
+    (all_merchant_averages.sum /
+      BigDecimal(all_merchant_averages.length)).round(2)
   end
 
   def golden_items
@@ -60,7 +62,9 @@ class SalesAnalyst
   end
 
   def average_invoices_per_merchant_standard_deviation
-    std_dev(merchants.all.map { |merchant| num_of_invoices_by_merchant(merchant.id) })
+    std_dev(merchants.all.map do |merchant|
+      num_of_invoices_by_merchant(merchant.id)
+    end)
   end
 
   def num_of_invoices_by_merchant(id)
@@ -69,7 +73,7 @@ class SalesAnalyst
 
   def top_merchants_by_invoice_count
     two_devs_above = average_invoices_per_merchant +
-      (average_invoices_per_merchant_standard_deviation * 2)
+                     (average_invoices_per_merchant_standard_deviation * 2)
     merchants.all.find_all do |merchant|
       num_of_invoices_by_merchant(merchant.id) > two_devs_above
     end
@@ -77,7 +81,7 @@ class SalesAnalyst
 
   def bottom_merchants_by_invoice_count
     two_devs_below = average_invoices_per_merchant -
-      (average_invoices_per_merchant_standard_deviation * 2)
+                     (average_invoices_per_merchant_standard_deviation * 2)
     merchants.all.find_all do |merchant|
       num_of_invoices_by_merchant(merchant.id) < two_devs_below
     end
@@ -131,9 +135,10 @@ class SalesAnalyst
       transactions.find_all_by_invoice_id(invoice.id)
     end
 
-    successful_transaction_invoice_ids = transactions_by_invoice_id.flatten.reduce([]) do |results, transaction|
-      results << invoice_items.find_all_by_invoice_id(transaction.invoice_id) if transaction.result == :success
-    end.flatten.uniq
+    successful_transaction_invoice_ids =
+      transactions_by_invoice_id.flatten.reduce([]) do |results, transaction|
+        results << invoice_items.find_all_by_invoice_id(transaction.invoice_id) if transaction.result == :success
+      end.flatten.uniq
 
     successful_transaction_invoice_ids.reduce(0) do |sum, invoice_item|
       sum + invoice_item.unit_price * invoice_item.quantity

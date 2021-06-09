@@ -9,7 +9,7 @@ class InvoiceRepository
   attr_reader :all
 
   def initialize(path)
-    @all = []
+    @all         = []
     populate_repository(path)
     @by_merchant = invoices_by_merchant_id
   end
@@ -66,9 +66,8 @@ class InvoiceRepository
   end
 
   def top_days
-    num_invoices_by_day.reduce([]) do |array, (day, num_invoices)|
+    num_invoices_by_day.each_with_object([]) do |(day, num_invoices), array|
       array << day if num_invoices > std_dev_from_avg(num_invoices_by_day.values, 1)
-      array
     end
   end
 

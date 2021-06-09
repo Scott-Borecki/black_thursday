@@ -90,12 +90,12 @@ RSpec.describe InvoiceRepository do
     end
 
     it 'can return the invoices by day of week' do
-      expect(@i.invoices_by_day.keys.include?("Monday")).to be true
+      expect(@i.invoices_by_day.keys.include?('Monday')).to be true
       expect(@i.invoices_by_day.values[0][0]).to be_an_instance_of(Invoice)
     end
 
     it 'can return the number of invoices by day of week' do
-      expect(@i.num_invoices_by_day.keys.include?("Monday")).to be true
+      expect(@i.num_invoices_by_day.keys.include?('Monday')).to be true
       expect(@i.num_invoices_by_day.values[0]).to be_an_instance_of(Integer)
     end
 

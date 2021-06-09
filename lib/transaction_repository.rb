@@ -25,7 +25,9 @@ class TransactionRepository
   end
 
   def find_all_by_credit_card_number(credit_card_number)
-    all.find_all { |transaction| credit_card_number == transaction.credit_card_number }
+    all.find_all do |transaction|
+      credit_card_number == transaction.credit_card_number
+    end
   end
 
   def find_all_by_result(result)
@@ -48,7 +50,9 @@ class TransactionRepository
   end
 
   def invoice_paid_in_full?(invoice_id)
-    find_all_by_invoice_id(invoice_id).any? { |transaction| transaction.result == :success }
+    find_all_by_invoice_id(invoice_id).any? do |transaction| 
+      transaction.result == :success
+    end
   end
 
   def populate_repository(path)
