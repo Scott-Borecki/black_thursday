@@ -41,10 +41,11 @@ class SalesAnalyst
   end
 
   def average_average_price_per_merchant
-    all_merchant_averages = merchants.all.map do |merchant|
+    all_merchant_averages = merchants.all.sum do |merchant|
     average_item_price_for_merchant(merchant.id)
     end
-    (all_merchant_averages.sum / BigDecimal(all_merchant_averages.count)).round(2)
+    (all_merchant_averages / BigDecimal(all_merchant_averages.count)).round(2)
+    # average price of items divided by total number of merchants
   end
 
   def golden_items
@@ -99,7 +100,7 @@ class SalesAnalyst
   def merchants_with_pending_invoices
     invoices.all.each_with_object([]) do |invoice, array|
       merchant = merchants.find_by_id(invoice.merchant_id)
-      array << merchant unless successful_transaction?(invoice.id)
+      array << merchant unless transactions.successful_transaction?(invoice.id)
     end.uniq
   end
 
