@@ -10,13 +10,13 @@ class SalesAnalyst
               :transactions
 
   def initialize(sales_engine)
-    @sales_engine = sales_engine
-    @merchants = sales_engine.merchants
-    @items = sales_engine.items
-    @customers = sales_engine.customers
-    @invoices = sales_engine.invoices
+    @sales_engine  = sales_engine
+    @merchants     = sales_engine.merchants
+    @items         = sales_engine.items
+    @customers     = sales_engine.customers
+    @invoices      = sales_engine.invoices
     @invoice_items = sales_engine.invoice_items
-    @transactions = sales_engine.transactions
+    @transactions  = sales_engine.transactions
   end
 
   def average_items_per_merchant
@@ -29,7 +29,9 @@ class SalesAnalyst
 
   def merchants_with_high_item_count
     merchants.all.find_all do |merchant|
-      items.find_all_by_merchant_id(merchant.id).length >= average_items_per_merchant_standard_deviation + average_items_per_merchant
+      items.find_all_by_merchant_id(merchant.id).length >=
+        average_items_per_merchant_standard_deviation +
+          average_items_per_merchant
     end
   end
 
@@ -62,16 +64,18 @@ class SalesAnalyst
   end
 
   def top_merchants_by_invoice_count
-    two_devs = average_invoices_per_merchant + (average_invoices_per_merchant_standard_deviation * 2)
-    merchants.all.each_with_object([]) do |merchant, array|
-      array << merchant if invoices.find_all_by_merchant_id(merchant.id).length > two_devs
+    two_devs = average_invoices_per_merchant +
+      (average_invoices_per_merchant_standard_deviation * 2)
+    merchants.all.find_all do |merchant|
+      invoices.find_all_by_merchant_id(merchant.id).length > two_devs
     end
   end
 
   def bottom_merchants_by_invoice_count
-    two_devs = average_invoices_per_merchant - (average_invoices_per_merchant_standard_deviation * 2)
-    merchants.all.each_with_object([]) do |merchant, array|
-      array << merchant if invoices.find_all_by_merchant_id(merchant.id).length < two_devs
+    two_devs = average_invoices_per_merchant -
+      (average_invoices_per_merchant_standard_deviation * 2)
+    merchants.all.find_all do |merchant|
+      invoices.find_all_by_merchant_id(merchant.id).length < two_devs
     end
   end
 
