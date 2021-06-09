@@ -51,6 +51,14 @@ class ItemRepository
     all.delete(item)
   end
 
+  def item_prices(merchant_id)
+    find_all_by_merchant_id(merchant_id).map { |item| item.unit_price }
+  end
+
+  def average_item_price_for_merchant(merchant_id)
+    (item_prices(merchant_id).sum / BigDecimal(item_prices(merchant_id).count)).round(2)
+  end
+
   def total_num
     all.uniq.count
   end
