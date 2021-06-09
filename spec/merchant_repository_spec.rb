@@ -67,6 +67,10 @@ RSpec.describe MerchantRepository do
       expect(@mr.find_by_id(12_334_105)).to eq(nil)
     end
 
+    it 'can return the total number of merchants' do
+      expect(@mr.total_num).to eq(7)
+    end
+
     it 'populates repository' do
       path = './spec/fixtures/merchants.csv'
       @mr.populate_repository(path)

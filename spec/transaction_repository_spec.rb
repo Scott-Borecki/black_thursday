@@ -88,5 +88,9 @@ RSpec.describe TransactionRepository do
       @tr.delete(7)
       expect(@tr.all.count).to eq(6)
     end
+
+    it 'can identify if an invoice is paid in full' do
+      expect(@tr.invoice_paid_in_full?(2179)).to eq(true)
+    end
   end
 end

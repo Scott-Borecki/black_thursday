@@ -9,6 +9,7 @@ class InvoiceItemRepository
   def initialize(path)
     @all = []
     populate_repository(path)
+    @by_invoice = invoice_items_by_invoice_id
   end
 
   def find_by_id(id)
@@ -19,8 +20,12 @@ class InvoiceItemRepository
     all.find_all { |invoice| id == invoice.item_id }
   end
 
-  def find_all_by_invoice_id(id)
-    all.find_all { |invoice| id == invoice.invoice_id }
+  def invoice_items_by_invoice_id
+    all.group_by { |invoice_item| invoice_item.invoice_id }
+  end
+
+  def find_all_by_invoice_id(invoice_id)
+    @by_invoice[invoice_id] || []
   end
 
   def create(attributes)
@@ -36,6 +41,12 @@ class InvoiceItemRepository
   def delete(id)
     invoice_item = find_by_id(id)
     all.delete(invoice_item)
+  end
+
+  def sum_invoice_items(invoice_id)
+    find_all_by_invoice_id(invoice_id).sum do |invoice_item|
+      invoice_item.unit_price * invoice_item.quantity
+    end
   end
 
   def populate_repository(path)

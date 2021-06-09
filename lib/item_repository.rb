@@ -2,14 +2,16 @@ require 'CSV'
 require_relative '../lib/item'
 require 'bigdecimal'
 require 'time'
+require_relative 'mathable'
 
 class ItemRepository
-
+  include Mathable
   attr_reader :all
 
   def initialize(path)
     @all = []
     populate_repository(path)
+    @by_merchant = items_by_merchant_id
   end
 
   def find_by_id(id)
@@ -32,8 +34,12 @@ class ItemRepository
     all.find_all { |item| range.include?(item.unit_price) }
   end
 
+  def items_by_merchant_id
+    all.group_by { |item| item.merchant_id }
+  end
+
   def find_all_by_merchant_id(merchant_id)
-    all.find_all { |item| merchant_id == item.merchant_id }
+    @by_merchant[merchant_id] || []
   end
 
   def create(attributes)
@@ -49,6 +55,31 @@ class ItemRepository
   def delete(id)
     item = find_by_id(id)
     all.delete(item)
+  end
+
+  def sum_item_prices(merchant_id)
+    find_all_by_merchant_id(merchant_id).sum { |item| item.unit_price }
+  end
+
+  def average_item_price_for_merchant(merchant_id)
+    (sum_item_prices(merchant_id) / BigDecimal(find_all_by_merchant_id(merchant_id).count)).round(2)
+  end
+
+  def total_num
+    all.uniq.count
+  end
+
+  def golden_items
+    num_items = all.map do |item|
+      item.unit_price
+    end
+    mean = num_items.sum.fdiv(num_items.count).round(2)
+    item_std_dev = std_dev(num_items)
+    two_devs = mean + (item_std_dev * 2)
+    all.reduce([]) do |array, item|
+      array << item if item.unit_price > two_devs
+      array
+    end
   end
 
   def populate_repository(path)

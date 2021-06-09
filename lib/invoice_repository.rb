@@ -1,13 +1,17 @@
 require 'CSV'
 require_relative '../lib/invoice'
 require 'time'
+require_relative 'mathable'
 
 class InvoiceRepository
+  include Mathable
+
   attr_reader :all
 
   def initialize(path)
     @all = []
     populate_repository(path)
+    @by_merchant = invoices_by_merchant_id
   end
 
   def find_by_id(id)
@@ -18,12 +22,20 @@ class InvoiceRepository
     all.find_all { |invoice| customer_id == invoice.customer_id }
   end
 
+  def invoices_by_merchant_id
+    all.group_by { |invoice| invoice.merchant_id }
+  end
+
   def find_all_by_merchant_id(merchant_id)
-    all.find_all { |invoice| merchant_id == invoice.merchant_id }
+    @by_merchant[merchant_id] || []
   end
 
   def find_all_by_status(status)
     all.find_all { |invoice| status.downcase == invoice.status.downcase }
+  end
+
+  def find_all_by_date(date)
+    all.find_all { |invoice| date === invoice.created_at }
   end
 
   def create(attributes)
@@ -39,6 +51,29 @@ class InvoiceRepository
   def delete(id)
     item = find_by_id(id)
     all.delete(item)
+  end
+
+  def total_num
+    all.uniq.count
+  end
+
+  def invoices_by_day
+    all.group_by { |invoice| invoice.created_at.strftime('%A') }
+  end
+
+  def num_invoices_by_day
+    invoices_by_day.transform_values { |values| values.length }
+  end
+
+  def top_days
+    num_invoices_by_day.each_with_object([]) do |(day, num_invoices), array|
+      array << day if num_invoices > std_dev_from_avg(num_invoices_by_day.values, 1)
+    end
+  end
+
+  def invoice_status(status)
+    status_count = find_all_by_status(status).count
+    (status_count.to_f / total_num * 100).round(2)
   end
 
   def populate_repository(path)

@@ -82,6 +82,10 @@ RSpec.describe InvoiceItemRepository do
 
         expect(@iir.find_by_id(10)).to be nil
       end
+
+      it 'can sum invoice items from given invoice id' do
+        expect(@iir.sum_invoice_items(2)).to eq(0.187274e4)
+      end
     end
   end
 end

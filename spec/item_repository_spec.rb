@@ -112,12 +112,28 @@ RSpec.describe ItemRepository do
       expect(@ir.all.count).to eq(5)
     end
 
+    it 'can return sum of item prices by merchant id' do
+      expect(@ir.sum_item_prices(12334185)).to eq(0.335e2)
+    end
+
+    it 'can return the average item price for a merchant' do
+      expect(@ir.average_item_price_for_merchant(12334185)).to eq(0.1117e2)
+    end
+
+    it 'can return the total number of items' do
+      expect(@ir.total_num).to eq(6)
+    end
+
     it 'populates repository' do
       path = './spec/fixtures/items.csv'
       @ir.populate_repository(path)
       @ir.delete(1)
 
       expect(@ir.all.count).to eq(12)
+    end
+
+    it 'can return "Golden Items" 2 standard deviations above average price' do
+      expect(@ir.golden_items.length).to eq(1)
     end
   end
 end

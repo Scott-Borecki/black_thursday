@@ -1,6 +1,5 @@
 require 'rspec'
 require_relative '../lib/sales_engine'
-require_relative '../lib/sales_engine'
 require 'simplecov'
 SimpleCov.start
 
@@ -31,5 +30,6 @@ RSpec.describe SalesEngine do
     expect(se.invoice_items).to be_a(InvoiceItemRepository)
     expect(se.transactions).to be_a(TransactionRepository)
     expect(se.customers).to be_a(CustomerRepository)
+    expect(se.analyst).to be_a(SalesAnalyst)
   end
 end
