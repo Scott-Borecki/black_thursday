@@ -11,7 +11,6 @@ class InvoiceRepository
   def initialize(path)
     @all = []
     populate_repository(path)
-    @by_merchant = invoices_by_merchant_id
   end
 
   def find_by_id(id)
@@ -23,11 +22,11 @@ class InvoiceRepository
   end
 
   def invoices_by_merchant_id
-    all.group_by { |invoice| invoice.merchant_id }
+    @by_merchant ||= all.group_by { |invoice| invoice.merchant_id }
   end
 
   def find_all_by_merchant_id(merchant_id)
-    @by_merchant[merchant_id] || []
+    invoices_by_merchant_id[merchant_id] || []
   end
 
   def find_all_by_status(status)
