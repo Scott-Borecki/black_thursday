@@ -36,7 +36,10 @@ class TransactionRepository
   def create(attributes)
     new_id = all.max_by { |transaction| transaction.id }.id + 1
     attributes[:id] = new_id
-    all << Transaction.new(attributes)
+    new = Transaction.new(attributes)
+    all << new
+    @by_invoice[new.invoice_id].nil? ?
+      @by_invoice[new.invoice_id] = new : @by_invoice[new.invoice_id] << new
   end
 
   def update(id, attributes)
@@ -45,7 +48,9 @@ class TransactionRepository
 
   def delete(id)
     transaction = find_by_id(id)
+    return if transaction.nil?
     all.delete(transaction)
+    @by_invoice[transaction.invoice_id].delete(transaction)
   end
 
   def invoice_paid_in_full?(invoice_id)

@@ -9,6 +9,7 @@ RSpec.describe TransactionRepository do
 
   before :each do
     @tr = TransactionRepository.new('./spec/fixtures/transactions.csv')
+    @tr.transactions_by_invoice_id
   end
 
   describe 'instantiation' do
